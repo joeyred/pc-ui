@@ -6,6 +6,8 @@ import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
 
+import PictureFrame from '../components/PictureFrame';
+
 import ThemeLayout from './ThemeLayout';
 
 import '../semantic/dist/semantic.min.css';
@@ -14,12 +16,11 @@ storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo(
 
 storiesOf('Semantic UI Theme', module).add('ThemeLayout', () => <ThemeLayout />);
 
-storiesOf('Button', module)
-  .add('with text', () => <Button onClick={action('clicked')}>Hello Button</Button>)
-  .add('with some emoji', () => (
-    <Button onClick={action('clicked')}>
-      <span role="img" aria-label="so cool">
-        😀 😎 👍 💯
-      </span>
-    </Button>
-  ));
+storiesOf('Frame', module)
+  .add('8x16', () => {
+    return (
+      <div style='padding: 4rem'>
+        <PictureFrame dimensions={[8, 16]} />
+      </div>
+    );
+  });

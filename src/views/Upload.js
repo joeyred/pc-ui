@@ -49,7 +49,11 @@ class Upload extends Component {
 
         <Grid.Column stretched width={11}>
           <Segment>
-            This is an stretched grid column. This segment will always match the tab height
+            <Header icon>
+              <Icon name='upload' />
+              Drag and Drop, Copy and Paste
+            </Header>
+            <Button primary>Add Files</Button>
           </Segment>
         </Grid.Column>
       </Grid>

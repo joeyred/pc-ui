@@ -30,3 +30,5 @@ Rect.propTypes = {
   width:  PropTypes.number,
   fill:   PropTypes.string
 };
+
+export default Rect;
