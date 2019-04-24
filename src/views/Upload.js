@@ -5,7 +5,9 @@ import {
   Grid,
   Menu,
   Segment,
-  Icon
+  Icon,
+  Header,
+  Button
 } from 'semantic-ui-react'
 
 class Upload extends Component {
@@ -48,7 +50,7 @@ class Upload extends Component {
         </Grid.Column>
 
         <Grid.Column stretched width={11}>
-          <Segment>
+          <Segment placeholder>
             <Header icon>
               <Icon name='upload' />
               Drag and Drop, Copy and Paste

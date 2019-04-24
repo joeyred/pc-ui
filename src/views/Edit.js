@@ -1,38 +1,58 @@
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import {
   Grid,
-  Header
+  Header,
+  Button,
+  Icon,
+  Menu
 } from 'semantic-ui-react';
 
-import PictureFrame from '../components/PictureFrame';
+import FrameSelector from '../components/FrameSelector';
 
-const Edit = (props) => {
-  return (
-    <Grid>
-      {/* Frame Select */}
-      <Grid.Row>
+class Edit extends Component {
 
-      </Grid.Row>
-      {/* Image Editor */}
-      <Grid.Row>
+  render() {
+    const frames = [
+      [8, 8],
+      [8, 12],
+      [12, 8],
+      [8, 16],
+      [16, 8]
+    ];
 
-      </Grid.Row>
+    return (
+      <Grid>
+        {/* Frame Select */}
+        <Grid.Row>
+          <Header as='h1' textAlign='center'>
+            Select A Frame
+          </Header>
+        </Grid.Row>
+        <Grid.Row>
 
-      {/* Image Editor - Toolbar */}
-      <Grid.Row>
-        <ButtonGroup>
-          <Button icon>
-            
-          </Button>
-        </ButtonGroup>
-      </Grid.Row>
+          <FrameSelector frames={frames} direction='horizontal' />
+        </Grid.Row>
+        {/* Image Editor */}
+        <Grid.Row></Grid.Row>
 
-      {/* Revert and Save Buttons? */}
-    </Grid>
-  );
-};
+        {/* Image Editor - Toolbar */}
+        <Grid.Row>
+          <Button.Group>
+            <Button>
+              <Header size='tiny' icon>
+                <Icon name='crop'/>
+                Crop
+              </Header>
+            </Button>
+          </Button.Group>
+        </Grid.Row>
+        {/* Revert and Save Buttons? */}
+      </Grid>
+    );
+  };
+}
 
 Edit.defaultProps = {};
 

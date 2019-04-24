@@ -6,7 +6,9 @@ import { linkTo } from '@storybook/addon-links';
 
 import { Button, Welcome } from '@storybook/react/demo';
 
-import PictureFrame from '../components/PictureFrame';
+import PictureFrame from '../components/FrameSelector/PictureFrame';
+
+import FrameSelector from '../components/FrameSelector';
 
 import ThemeLayout from './ThemeLayout';
 
@@ -19,8 +21,22 @@ storiesOf('Semantic UI Theme', module).add('ThemeLayout', () => <ThemeLayout />)
 storiesOf('Frame', module)
   .add('8x16', () => {
     return (
-      <div style='padding: 4rem'>
+      <div style={{height: '300px', width: '300px'}}>
         <PictureFrame dimensions={[8, 16]} />
       </div>
+    );
+  });
+
+storiesOf('Frame Selector', module)
+  .add('basic', () => {
+    const frames = [
+      [8, 8],
+      [8, 12],
+      [12, 8],
+      [8, 16],
+      [16, 8]
+    ];
+    return (
+      <FrameSelector frames={frames} />
     );
   });

@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "filestack-react": "^2.0.5",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.2",
     "react-scripts": "2.1.8",
+    "redux": "^4.0.1",
     "semantic-ui-react": "^0.86.0",
     "styled-components": "^4.2.0"
   },
@@ -28,13 +31,17 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "semantic-ui": "^2.4.2",
-    "@storybook/react": "^5.0.10",
+    "@babel/core": "^7.4.3",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-links": "^5.0.10",
     "@storybook/addons": "^5.0.10",
-    "@babel/core": "^7.4.3",
-    "babel-loader": "^8.0.5"
+    "@storybook/react": "^5.0.10",
+    "babel-loader": "^8.0.5",
+    "better-console": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-help": "^1.6.1",
+    "node-sass": "^4.11.0",
+    "require-dot-file": "^0.4.0",
+    "semantic-ui": "^2.4.2"
   }
 }

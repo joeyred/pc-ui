@@ -1,0 +1,73 @@
+$breakpoints: (
+  sm:  0,
+  md:  640,
+  lg:  1024,
+  xl:  1200,
+  xxl: 1440,
+);
+$active-breakpoints: (
+  sm:  true,
+  md:  true,
+  lg:  true,
+  xl:  true,
+  xxl: true,
+);
+
+////
+/// Remove the unit of a length.
+///
+/// @since 1.0.0
+///
+/// @param {Number} $number - Number to remove unit from
+/// @return {Number}        - Unitless number
+///
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+// TODO Document breakpoint function.
+@function create-breakpoint($bp, $min-max: min) {
+
+  $bf: strip-unit(16);
+  $em: $bp / $bf;
+  $media: false;
+
+  @if $em != 0 {
+    $media: '#{$min-max}-width: #{$em}em';
+  }
+
+  @return $media;
+}
+
+////
+/// Media Query Mixin for Breakpoints
+///
+/// @since 0.1.0
+///
+/// @param {String} $_bp - The key name for the breakpoint to be used.
+///
+@mixin breakpoint($_bp) {
+  // If passed breakpoint is currently enabled.
+  @if map-get($active-breakpoints, $_bp) {
+    // Get the value of the passed breakpoint.
+    $current-bp: map-get($breakpoints, $_bp);
+    // Generate the Media Query string.
+    $current-media: create-breakpoint($current-bp);
+    // If `$current-media` is 0, thus false, then just spit the content out with no query,
+    @if $current-media == false {
+      @content;
+    }
+    // Else take the value of `$current-media`, use it to make the query, and put the
+    // content inside the query.
+    @else {
+      @media screen and (#{$current-media}) { @content; }
+    }
+  }
+  // Else throw a warning.
+  @else {
+    @warn '#{$_bp} is not an enabled breakpoint. Please check the $active-breakpoints map in _settings.scss.';
+  }
+}

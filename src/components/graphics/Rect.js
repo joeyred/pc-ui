@@ -17,7 +17,7 @@ const Rect = (props) => {
   //      far more defined in that respect. At least that's what I hope.
 
   return (
-    <Graphic viewBox={[height, width]}>
+    <Graphic viewBox={[width, height]}>
 
       <rect x='0' y='0' height={height} width={width} />
 

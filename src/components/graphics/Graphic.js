@@ -45,13 +45,13 @@ const Graphic = (props) => {
 }
 
 Graphic.propTypes = {
-  viewBox: PropTypes.oneOf([
+  viewBox: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.number),
     PropTypes.number
   ]).isRequired,
-  height:     PropTypes.oneOf([PropTypes.bool, PropTypes.number]),
-  width:      PropTypes.oneOf([PropTypes.bool, PropTypes.number]),
+  height:     PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
+  width:      PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
   display:    PropTypes.bool,
   keepRatio:  PropTypes.bool,
   fluid:      PropTypes.bool,
