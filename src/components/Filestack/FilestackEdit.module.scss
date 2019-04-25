@@ -1,0 +1,9 @@
+.overrides {
+  :global(.fsp-header) {
+    display: none;
+  }
+  :global(.fsp-content--transformer) {
+    padding-bottom: 0;
+    height: calc(100% - 150px);
+  }
+}

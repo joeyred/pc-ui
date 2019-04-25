@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import * as filestack from 'filestack-js';
 import _ from 'lodash';
 
-import styles from './Upload.module.scss';
+import styles from './FilestackUpload.module.scss';
 
 // NOTE
 // Might need to lift state up to a Redux store.

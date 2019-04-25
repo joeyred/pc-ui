@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import * as filestack from 'filestack-js';
 import _ from 'lodash';
 
+import styles from './FilestackEdit.module.scss';
+
 // NOTE
 //
 // @link https://filestack.github.io/filestack-js/interfaces/pickercustomtext.html
@@ -122,7 +124,7 @@ class Edit extends Component {
       <div
         style={{width: '100%', height: '100%'}}
         id={options.container}
-        // className={styles.overrides}
+        className={styles.overrides}
       ></div>
     );
   }

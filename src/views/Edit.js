@@ -9,11 +9,15 @@ import {
   Menu
 } from 'semantic-ui-react';
 
+import Filestack from '../components/Filestack';
 import FrameSelector from '../components/FrameSelector';
+
+import styles from './Edit.module.scss';
 
 class Edit extends Component {
 
   render() {
+    const apiKey = 'AA1ZGkqsZT1Ca96rjT6mKz';
     const frames = [
       [8, 8],
       [8, 12],
@@ -23,33 +27,23 @@ class Edit extends Component {
     ];
 
     return (
-      <Grid>
+      <div className={styles['height-fill']}>
         {/* Frame Select */}
-        <Grid.Row>
+        <div>
           <Header as='h1' textAlign='center'>
             Select A Frame
           </Header>
-        </Grid.Row>
-        <Grid.Row>
+        </div>
+        <div>
 
           <FrameSelector frames={frames} direction='horizontal' />
-        </Grid.Row>
+        </div>
         {/* Image Editor */}
-        <Grid.Row></Grid.Row>
+        <div className={styles['fill-remaining-height']}>
+          <Filestack.Edit apiKey={apiKey} file='https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI' />
+        </div>
 
-        {/* Image Editor - Toolbar */}
-        <Grid.Row>
-          <Button.Group>
-            <Button>
-              <Header size='tiny' icon>
-                <Icon name='crop'/>
-                Crop
-              </Header>
-            </Button>
-          </Button.Group>
-        </Grid.Row>
-        {/* Revert and Save Buttons? */}
-      </Grid>
+      </div>
     );
   };
 }
