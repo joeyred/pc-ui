@@ -1,0 +1,9 @@
+.height-fill {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 158px);
+}
+
+.fill-remaining-height {
+  flex: 1;
+}

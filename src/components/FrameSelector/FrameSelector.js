@@ -25,7 +25,7 @@ const FrameSelector = (props) => {
     <Grid.Column stretched key={`${frame[0]}x${frame[0]}_${index}`}>
 
       <button
-        className={activeFrameIndex === index ? styles.active : null}
+        className={`${activeFrameIndex === index ? styles.active : null} ${styles.button}`}
         onClick={() => clickHandler(index)}
       >
         <PictureFrame dimensions={frame} />
@@ -34,9 +34,11 @@ const FrameSelector = (props) => {
     </Grid.Column>
   ));
   return (
-    <Grid columns={columnsPerRow} verticalAlign='middle'>
-      {frameComponents}
-    </Grid>
+    <div className={styles.container}>
+      <Grid columns={columnsPerRow} verticalAlign='middle'>
+        {frameComponents}
+      </Grid>
+    </div>
   );
 };
 

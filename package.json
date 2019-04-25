@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "filestack-js": "^2.0.7",
     "filestack-react": "^2.0.5",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
