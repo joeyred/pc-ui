@@ -22,6 +22,7 @@ const mapStateToProps = (state) => (
     apiKey: state.filestack.apiKey,
     frames: state.edit.frames,
     activeFrameIndex: state.edit.selectedFrameIndex,
+    selectedFrame: state.edit.selectedFrame,
     file: state.edit.file
   }
 );
@@ -30,7 +31,8 @@ class Edit extends Component {
   static propTypes = {
     apiKey: PropTypes.string.isRequired,
     frames: PropTypes.array,
-    activeFrameIndex: PropTypes.number
+    activeFrameIndex: PropTypes.number,
+    selectedFrame: PropTypes.array,
     // file: PropTypes.object.isRequired,
   };
   render() {
@@ -39,12 +41,22 @@ class Edit extends Component {
       apiKey,
       frames,
       activeFrameIndex,
+      selectedFrame,
       file,
       dispatch
     } = this.props;
 
     const updateSelectedFrame = bindActionCreators(EditActionCreators.updateSelectedFrame, dispatch);
-
+    const aspectRatio = selectedFrame[0]/selectedFrame[1];
+    const options = {
+      transformations: {
+        crop: {
+          aspectRatio
+        }
+      },
+      displayMode: 'inline',
+      container: 'editContainer'
+    };
     return (
       <div className={styles['height-fill']}>
         {/* Frame Select */}
@@ -64,7 +76,12 @@ class Edit extends Component {
         </div>
         {/* Image Editor */}
         <div className={styles['fill-remaining-height']}>
-          <Filestack.Edit apiKey={apiKey} file={file} />
+          <Filestack.Edit
+            apiKey={apiKey}
+            file={file}
+            options={options}
+            sessionCache={true}
+          />
         </div>
 
       </div>
