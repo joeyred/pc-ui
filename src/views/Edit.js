@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import EditActionCreators from '../redux/actions/edit';
 
 import {
   Grid,
@@ -14,18 +17,46 @@ import FrameSelector from '../components/FrameSelector';
 
 import styles from './Edit.module.scss';
 
+const mapStateToProps = (state) => (
+  {
+    apiKey: state.filestack.apiKey,
+    frames: state.edit.frames,
+    activeFrameIndex: state.edit.selectedFrameIndex,
+    selectedFrame: state.edit.selectedFrame,
+    file: state.edit.file
+  }
+);
+
 class Edit extends Component {
-
+  static propTypes = {
+    apiKey: PropTypes.string.isRequired,
+    frames: PropTypes.array,
+    activeFrameIndex: PropTypes.number,
+    selectedFrame: PropTypes.array,
+    // file: PropTypes.object.isRequired,
+  };
   render() {
-    const apiKey = 'AA1ZGkqsZT1Ca96rjT6mKz';
-    const frames = [
-      [8, 8],
-      [8, 12],
-      [12, 8],
-      [8, 16],
-      [16, 8]
-    ];
+    // console.log(this.props);
+    const {
+      apiKey,
+      frames,
+      activeFrameIndex,
+      selectedFrame,
+      file,
+      dispatch
+    } = this.props;
 
+    const updateSelectedFrame = bindActionCreators(EditActionCreators.updateSelectedFrame, dispatch);
+    const aspectRatio = selectedFrame[0]/selectedFrame[1];
+    const options = {
+      transformations: {
+        crop: {
+          aspectRatio
+        }
+      },
+      displayMode: 'inline',
+      container: 'editContainer'
+    };
     return (
       <div className={styles['height-fill']}>
         {/* Frame Select */}
@@ -36,11 +67,21 @@ class Edit extends Component {
         </div>
         <div>
 
-          <FrameSelector frames={frames} direction='horizontal' />
+          <FrameSelector
+            frames={frames}
+            activeFrameIndex={activeFrameIndex}
+            direction='horizontal'
+            clickHandler={updateSelectedFrame}
+          />
         </div>
         {/* Image Editor */}
         <div className={styles['fill-remaining-height']}>
-          <Filestack.Edit apiKey={apiKey} file='https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI' />
+          <Filestack.Edit
+            apiKey={apiKey}
+            file={file}
+            options={options}
+            sessionCache={true}
+          />
         </div>
 
       </div>
@@ -48,8 +89,4 @@ class Edit extends Component {
   };
 }
 
-Edit.defaultProps = {};
-
-Edit.propTypes = {};
-
-export default Edit;
+export default connect(mapStateToProps)(Edit);

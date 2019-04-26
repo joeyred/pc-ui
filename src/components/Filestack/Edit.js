@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import * as filestack from 'filestack-js';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import styles from './FilestackEdit.module.scss';
 
@@ -54,14 +54,15 @@ class Edit extends Component {
       apiKey,
       security,
       sessionCache,
-      active
+      active,
+      options
     } = this.props;
-    const overrides = {
-      displayMode: 'inline',
-      container: 'editContainer'
-    };
-    // Parse options and override any breaking options that may be passed
-    const options = _.extend(this.props.options, overrides);
+    // const overrides = {
+    //   displayMode: 'inline',
+    //   container: 'editContainer'
+    // };
+    // // Parse options and override any breaking options that may be passed
+    // const options = _.extend(this.props.options, overrides);
     // Create client instance
     const client = filestack.init(apiKey, {
       security,
@@ -71,8 +72,8 @@ class Edit extends Component {
     this.state = {
       client,
       active,
-      options
-      // picker: client.picker({ ...options, onUploadDone: this.onFinished }),
+      options,
+      picker: client.picker({ ...options, onUploadDone: this.onFinished }),
     };
 
     this.onFinished = this.onFinished.bind(this);
@@ -84,16 +85,22 @@ class Edit extends Component {
       .then(this.onFinished)
       .catch(this.onFail);
   }
+  componentDidUpdate() {
+    const {file, options} = this.props;
+    const {container} = options;
+    document.getElementById(container).innerHTML = '';
+    this.mountPicker(file)
+      .then(this.onFinished)
+      .catch(this.onFail);
+  }
   /**
    * Handles initializing and instance of the picker and mounting it
    * @method mountPicker
    * @return {Promise}    - The instance.
    */
   mountPicker = (file) => {
-    const {
-      client,
-      options
-    } = this.state;
+    const {client} = this.state;
+    const {options} = this.props;
     return new Promise((resolve) => {
       client.picker({ ...options, onUploadDone: resolve }).crop(file);
     });
@@ -119,6 +126,7 @@ class Edit extends Component {
     const {
       options
     } = this.state;
+    console.log('FS Crop Rendered');
 
     return (
       <div
