@@ -1,0 +1,7 @@
+@import '../styles/foundation/main';
+
+.storybook {
+  :global {
+    @include foundation;
+  }
+}

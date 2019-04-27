@@ -1,13 +1,17 @@
 import React from 'react';
 
-import { storiesOf } from '@storybook/react';
+import { storiesOf, addDecorator } from '@storybook/react';
 // import { action } from '@storybook/addon-actions';
 // import { linkTo } from '@storybook/addon-links';
 
 import Filestack from '../components/Filestack';
 import PictureFrame from '../components/FrameSelector/PictureFrame';
 import FrameSelector from '../components/FrameSelector';
-import Thumbnail from '../components/Gallery/Thumbnail';
+import Thumbnail from '../components/UploadThumbnail';
+
+import styles from './foundation.module.scss';
+
+addDecorator((storyFn) => <div className={styles.storybook}>{storyFn()}</div>);
 
 storiesOf('Frame', module)
 .add('8x16', () => {
@@ -56,5 +60,5 @@ storiesOf('Thumbnail', module)
     {story()}
   </div>
 )
-.add('unedited', () => <Thumbnail imageSrc={imageExample} isEdited={false} />)
-.add('edited', () => <Thumbnail imageSrc={imageExample} isEdited={true} />);
+.add('unedited', () => <Thumbnail src={imageExample} isEdited={false} />)
+.add('edited', () => <Thumbnail src={imageExample} isEdited={true} />);
