@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import './App.css';
 
 import {
-  Menu
-} from 'semantic-ui-react';
+  TopBar,
+  TopBarLeft,
+  Menu,
+  MenuItem,
+} from 'react-foundation';
 
 import Edit from './views/Edit';
 import Gallery from './views/Gallery';
 import Upload from './views/Upload';
 
-import './semantic/dist/semantic.min.css';
+// import './styles/foundation/main.scss';
+import styles from './App.module.scss';
 
 
 class App extends Component {
   state = {
-    currentView: 'upload'
+    currentView: 'edit'
   };
   updateView(viewName) {
     this.setState({currentView: viewName})
@@ -26,8 +29,20 @@ class App extends Component {
       { key: 'edit', name: 'Edit', onClick: () => this.updateView('edit') }
     ];
     return (
-      <div className="App">
-        <Menu items={items} />
+      <div className={styles.App}>
+        <TopBar>
+          <TopBarLeft>
+            <Menu>
+              {items.map((item) => (
+                <MenuItem isActive={item.key === this.state.currentView} key={item.key} >
+                  <a onClick={item.onClick}>
+                    {item.name}
+                  </a>
+                </MenuItem>
+              ))}
+            </Menu>
+          </TopBarLeft>
+        </TopBar>
 
         {
           this.state.currentView === 'upload' ? <Upload /> :

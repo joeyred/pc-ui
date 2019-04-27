@@ -3,8 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 // 3rd Party Components
 import {
-  Grid
-} from 'semantic-ui-react';
+  Grid,
+  GridContainer,
+  Cell
+} from 'react-foundation';
 // Project Components
 import PictureFrame from './PictureFrame';
 // Styles
@@ -17,12 +19,12 @@ const FrameSelector = (props) => {
     direction,
     clickHandler
   } = props;
-  // Makes the display vertical or horizontal by manipulating stacking
-  const columnsPerRow = direction === 'horizontal' ? frames.length : 1;
+
+  const cellsPerRow = frames.length < 6 ? frames.length : 5;
 
   // Build out the array of frame components.
   const frameComponents = frames.map((frame, index) => (
-    <Grid.Column stretched key={`${frame[0]}x${frame[0]}_${index}`}>
+    <Cell key={`${frame[0]}x${frame[0]}_${index}`}>
 
       <button
         className={`${activeFrameIndex === index ? styles.active : null} ${styles.button}`}
@@ -31,11 +33,11 @@ const FrameSelector = (props) => {
         <PictureFrame dimensions={frame} />
       </button>
 
-    </Grid.Column>
+    </Cell>
   ));
   return (
     <div className={styles.container}>
-      <Grid columns={columnsPerRow} verticalAlign='middle'>
+      <Grid vertical={direction === 'vertical'} className={`small-up-${cellsPerRow}`}>
         {frameComponents}
       </Grid>
     </div>
