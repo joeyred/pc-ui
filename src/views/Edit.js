@@ -4,14 +4,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import EditActionCreators from '../redux/actions/edit';
 
-import {
-  Grid,
-  Header,
-  Button,
-  Icon,
-  Menu
-} from 'semantic-ui-react';
-
 import Filestack from '../components/Filestack';
 import FrameSelector from '../components/FrameSelector';
 
@@ -61,9 +53,9 @@ class Edit extends Component {
       <div className={styles['height-fill']}>
         {/* Frame Select */}
         <div>
-          <Header as='h1' textAlign='center'>
+          <h1>
             Select A Frame
-          </Header>
+          </h1>
         </div>
         <div>
 
