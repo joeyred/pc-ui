@@ -1,24 +1,13 @@
 import React from 'react';
 
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { linkTo } from '@storybook/addon-links';
-
-import { Button, Welcome } from '@storybook/react/demo';
+// import { action } from '@storybook/addon-actions';
+// import { linkTo } from '@storybook/addon-links';
 
 import Filestack from '../components/Filestack';
-
 import PictureFrame from '../components/FrameSelector/PictureFrame';
-
 import FrameSelector from '../components/FrameSelector';
-
-import ThemeLayout from './ThemeLayout';
-
-import '../semantic/dist/semantic.min.css';
-
-storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
-
-storiesOf('Semantic UI Theme', module).add('ThemeLayout', () => <ThemeLayout />);
+import Thumbnail from '../components/Gallery/Thumbnail';
 
 storiesOf('Frame', module)
 .add('8x16', () => {
@@ -60,3 +49,12 @@ storiesOf('Filestack', module)
   );
 })
 ;
+const imageExample = 'https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI';
+storiesOf('Thumbnail', module)
+.addDecorator((story) =>
+  <div style={{width: '200px', height: '200px', padding: '1rem'}}>
+    {story()}
+  </div>
+)
+.add('unedited', () => <Thumbnail imageSrc={imageExample} isEdited={false} />)
+.add('edited', () => <Thumbnail imageSrc={imageExample} isEdited={true} />);
