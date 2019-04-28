@@ -1,6 +1,8 @@
 import * as EditActionTypes from '../actiontypes/edit';
 // import _ from 'lodash';
 
+// TODO - Shopify API
+// Replace with data fetchers
 const initialState = {
   frames: [
     [8, 8],

@@ -7,7 +7,8 @@ import { storiesOf, addDecorator } from '@storybook/react';
 import Filestack from '../components/Filestack';
 import PictureFrame from '../components/FrameSelector/PictureFrame';
 import FrameSelector from '../components/FrameSelector';
-import Thumbnail from '../components/UploadThumbnail';
+import UploadThumbnail from '../components/UploadThumbnail';
+import ImageList from '../components/ImageList';
 
 import styles from './foundation.module.scss';
 
@@ -56,9 +57,11 @@ storiesOf('Filestack', module)
 const imageExample = 'https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI';
 storiesOf('Thumbnail', module)
 .addDecorator((story) =>
-  <div style={{width: '200px', height: '200px', padding: '1rem'}}>
+  <div style={{width: '30%', padding: '1rem'}}>
     {story()}
   </div>
 )
-.add('unedited', () => <Thumbnail src={imageExample} isEdited={false} />)
-.add('edited', () => <Thumbnail src={imageExample} isEdited={true} />);
+.add('unedited', () => <UploadThumbnail src={imageExample} isEdited={false} />)
+.add('edited', () => <UploadThumbnail src={imageExample} isEdited={true} />);
+
+storiesOf('ImageList', () => <ImageList />)
