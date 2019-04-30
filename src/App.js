@@ -11,8 +11,9 @@ import Edit from './views/Edit';
 import Gallery from './views/Gallery';
 import Upload from './views/Upload';
 
-// import './styles/foundation/main.scss';
+import './styles/foundation/global_include.scss';
 import styles from './App.module.scss';
+
 
 
 class App extends Component {

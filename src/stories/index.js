@@ -63,5 +63,79 @@ storiesOf('Thumbnail', module)
 )
 .add('unedited', () => <UploadThumbnail src={imageExample} isEdited={false} />)
 .add('edited', () => <UploadThumbnail src={imageExample} isEdited={true} />);
-
-storiesOf('ImageList', () => <ImageList />)
+const images = [
+  {
+    edited: false,
+    metadata: {
+      "filename":"myfile.png",
+      "handle":"AFrHW1QRsWxmu5ZLU2qg",
+      "mimetype":"image/png",
+      "originalPath":"picker_transformation.png",
+      "size":1277297,
+      "source":"local_file_system",
+      "url": imageExample,
+      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
+      "originalFile":{
+        "name":"myfile",
+        "type":"image/png",
+        "size":1277297
+      }
+    }
+  },
+  {
+    edited: true,
+    metadata: {
+      "filename":"myfile.png",
+      "handle":"AFrHW1QRsWxmu5ZLU2qg",
+      "mimetype":"image/png",
+      "originalPath":"picker_transformation.png",
+      "size":1277297,
+      "source":"local_file_system",
+      "url": imageExample,
+      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
+      "originalFile":{
+        "name":"myfile",
+        "type":"image/png",
+        "size":1277297
+      }
+    }
+  },
+  {
+    edited: false,
+    metadata: {
+      "filename":"myfile.png",
+      "handle":"AFrHW1QRsWxmu5ZLU2qg",
+      "mimetype":"image/png",
+      "originalPath":"picker_transformation.png",
+      "size":1277297,
+      "source":"local_file_system",
+      "url": imageExample,
+      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
+      "originalFile":{
+        "name":"myfile",
+        "type":"image/png",
+        "size":1277297
+      }
+    }
+  },
+  {
+    edited: true,
+    metadata: {
+      "filename":"myfile.png",
+      "handle":"AFrHW1QRsWxmu5ZLU2qg",
+      "mimetype":"image/png",
+      "originalPath":"picker_transformation.png",
+      "size":1277297,
+      "source":"local_file_system",
+      "url": imageExample,
+      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
+      "originalFile":{
+        "name":"myfile",
+        "type":"image/png",
+        "size":1277297
+      }
+    }
+  }
+];
+storiesOf('ImageList', module)
+.add('default per row', () => <ImageList images={images} />);

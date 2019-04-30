@@ -3,13 +3,23 @@ import * as EditActionTypes from '../actiontypes/edit';
 //   UPDATE_SELECTED_FRAME
 // } from '../actiontypes/edit';
 
-const updateSelectedFrame = index => {
+export const updateSelectedFrame = index => {
   return {
     type: EditActionTypes.UPDATE_SELECTED_FRAME,
     index
   }
 };
 
-export default {
-  updateSelectedFrame
-};
+export const updateCrop = crop => {
+  return {
+    type: EditActionTypes.UPDATE_CROP,
+    crop
+  }
+}
+
+export const storeImageDimensions = dimensions => {
+  return {
+    type: EditActionTypes.STORE_IMAGE_DIMENSIONS,
+    dimensions
+  }
+}
