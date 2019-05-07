@@ -9,10 +9,13 @@ import PictureFrame from '../components/FrameSelector/PictureFrame';
 import FrameSelector from '../components/FrameSelector';
 import UploadThumbnail from '../components/UploadThumbnail';
 import ImageList from '../components/ImageList';
+import Counter from '../components/Counter';
 
-import styles from './foundation.module.scss';
+import './foundation.scss';
 
-addDecorator((storyFn) => <div className={styles.storybook}>{storyFn()}</div>);
+import imgMock from '../imgs/IMG_0408.jpg';
+
+// addDecorator((storyFn) => <div className={styles.storybook}>{storyFn()}</div>);
 
 storiesOf('Frame', module)
 .add('8x16', () => {
@@ -54,88 +57,60 @@ storiesOf('Filestack', module)
   );
 })
 ;
-const imageExample = 'https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI';
 storiesOf('Thumbnail', module)
 .addDecorator((story) =>
   <div style={{width: '30%', padding: '1rem'}}>
     {story()}
   </div>
 )
-.add('unedited', () => <UploadThumbnail src={imageExample} isEdited={false} />)
-.add('edited', () => <UploadThumbnail src={imageExample} isEdited={true} />);
+.add('unedited', () => <UploadThumbnail src={imgMock} isEdited={false} />)
+.add('edited', () => <UploadThumbnail src={imgMock} isEdited={true} />);
+// const mockFactory = (image) => {
+//   const {
+//     edited,
+//     handle,
+//     url
+//   } = image;
+//   return {
+//     edited,
+//     handle,
+//     url,
+//   };
+// }
 const images = [
   {
-    edited: false,
-    metadata: {
-      "filename":"myfile.png",
-      "handle":"AFrHW1QRsWxmu5ZLU2qg",
-      "mimetype":"image/png",
-      "originalPath":"picker_transformation.png",
-      "size":1277297,
-      "source":"local_file_system",
-      "url": imageExample,
-      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
-      "originalFile":{
-        "name":"myfile",
-        "type":"image/png",
-        "size":1277297
-      }
-    }
-  },
-  {
     edited: true,
-    metadata: {
-      "filename":"myfile.png",
-      "handle":"AFrHW1QRsWxmu5ZLU2qg",
-      "mimetype":"image/png",
-      "originalPath":"picker_transformation.png",
-      "size":1277297,
-      "source":"local_file_system",
-      "url": imageExample,
-      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
-      "originalFile":{
-        "name":"myfile",
-        "type":"image/png",
-        "size":1277297
-      }
-    }
+    handle: 'xyxtxyeirhfhfudj',
+    url: imgMock
   },
   {
     edited: false,
-    metadata: {
-      "filename":"myfile.png",
-      "handle":"AFrHW1QRsWxmu5ZLU2qg",
-      "mimetype":"image/png",
-      "originalPath":"picker_transformation.png",
-      "size":1277297,
-      "source":"local_file_system",
-      "url": imageExample,
-      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
-      "originalFile":{
-        "name":"myfile",
-        "type":"image/png",
-        "size":1277297
-      }
-    }
+    handle: 'iadifdhshgweghhdf',
+    url: imgMock
   },
   {
     edited: true,
-    metadata: {
-      "filename":"myfile.png",
-      "handle":"AFrHW1QRsWxmu5ZLU2qg",
-      "mimetype":"image/png",
-      "originalPath":"picker_transformation.png",
-      "size":1277297,
-      "source":"local_file_system",
-      "url": imageExample,
-      "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
-      "originalFile":{
-        "name":"myfile",
-        "type":"image/png",
-        "size":1277297
-      }
-    }
-  }
+    handle: 'sjkfoishbaskjldg',
+    url: imgMock
+  },
+  {
+    edited: false,
+    handle: 'audfiughsdhfisbd',
+    url: imgMock
+  },
+  {
+    edited: false,
+    handle: 'uydydbgfhufhfhffg',
+    url: imgMock
+  },
+  {
+    edited: true,
+    handle: 'odiuddnfgfttdgddd',
+    url: imgMock
+  },
 ];
 storiesOf('ImageList', module)
 .add('default per row', () => <ImageList images={images} />);
+
+storiesOf('Counter', module)
+.add('basic', () => <Counter count={3} updateCount={() => console.log('yay button')} />);

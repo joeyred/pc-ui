@@ -19,7 +19,7 @@ const initialState = {
   selectedFrameIndex: 0,
   selectedFrame: [8, 8],
   aspectRatio: [8, 8],
-  file: 'https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI',
+  file: 'https://unsplash.com/photos/sf7TIaIwbjs',
   // crop: {
   //   aspectRatio: 8/8,
   // }

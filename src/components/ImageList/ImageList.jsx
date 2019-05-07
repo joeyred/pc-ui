@@ -29,11 +29,11 @@ const ImageList = (props) => {
     props.className
   );
   const thumbnails = images.map(image => (
-      <Cell>
+      <Cell key={image.handle}>
         <UploadThumbnail
-          src={image.metadata.url}
+          src={image.url}
           isEdited={image.edited}
-          handleClick={() => handleClick(image.metadata.handle)}
+          handleClick={() => handleClick(image.handle)}
         />
       </Cell>
   ));

@@ -1,0 +1,17 @@
+@import '../../styles/foundation/settings';
+
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.button {
+  border: none;
+  background: $primary-color;
+  padding: 0.625rem 0.75rem;
+}
+
+.count {
+  padding: 0.625rem 2rem;
+  background: $white;
+}

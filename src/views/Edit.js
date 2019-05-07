@@ -9,11 +9,13 @@ import {
   Grid,
   Cell,
   Button,
+  ButtonGroup,
   TopBar,
   TopBarLeft,
   Colors
 } from 'react-foundation';
-import {MdApps} from 'react-icons/md';
+
+import Icon from '../components/Icon';
 
 // import Filestack from '../components/Filestack';
 import FrameSelector from '../components/FrameSelector';
@@ -21,6 +23,9 @@ import ImageEditor from '../components/ImageEditor';
 
 import styles from './Edit.module.scss';
 import 'react-image-crop/lib/ReactCrop.scss';
+
+// Mock
+import mockImg from '../imgs/IMG_0408.jpg';
 
 const mapStateToProps = (state) => (
   {
@@ -70,19 +75,20 @@ class Edit extends Component {
     //   aspect: aspectRatio
     // };
     return (
-      <div>
-      <TopBar>
-        <TopBarLeft>
-          {/* TODO Add onClick */}
-          <Button color={Colors.SECONDARY}>
-            <MdApps /> Back To Gallery
-          </Button>
-        </TopBarLeft>
-      </TopBar>
-      <Grid vertical={true} className='grid-padding-y'>
+
+      <Grid vertical={true} className={`${styles.container}`}>
+        <TopBar>
+          <TopBarLeft>
+            {/* TODO Redux - Add Reducer to Back to Gallery button */}
+            <Button color={Colors.SECONDARY} size='small'>
+              <Icon name='Apps' /> Back To Gallery
+            </Button>
+          </TopBarLeft>
+        </TopBar>
+
         {/* Frame Select */}
         <Cell>
-          <h1>
+          <h1 className=''>
             Select A Frame
           </h1>
         </Cell>
@@ -96,9 +102,9 @@ class Edit extends Component {
           />
         </Cell>
         {/* Image Editor */}
-        <Cell>
+        <Cell className='auto'>
           <ImageEditor
-            file={file}
+            file={mockImg}
             crop={crop}
             updateCrop={updateCrop}
             storeImageDimensions={storeImageDimensions}
@@ -106,24 +112,54 @@ class Edit extends Component {
           />
         </Cell>
         <Cell>
-          <Button color={Colors.PRIMARY}>Apply</Button>
+          {/* TODO Replace with a Toolbar Component */}
+          <div className={styles.toolbar}>
+            <Button>
+              <Icon name='Crop' inline={false} className={styles.icon} />
+              <span>Crop</span>
+            </Button>
+            <ButtonGroup>
+              <Button>
+                <Icon name='ZoomIn' inline={false} className={styles.icon} />
+                <span>In</span>
+              </Button>
+              <Button>
+                <Icon name='ZoomOut' inline={false} className={styles.icon} />
+                <span>Out</span>
+              </Button>
+            </ButtonGroup>
+            <ButtonGroup>
+              <Button>
+                <Icon name='RotateLeft' inline={false} className={styles.icon} />
+                <span>Left</span>
+              </Button>
+              <Button>
+                <Icon name='RotateRight' inline={false} className={styles.icon} />
+                <span>Right</span>
+              </Button>
+            </ButtonGroup>
+          </div>
         </Cell>
-        {/* <ReactCrop
-          src={file}
-          crop={crop}
-          keepSelection={true}
-          onChange={updateCrop} /> */}
-        {/* <div className={styles['fill-remaining-height']}>
-          <Filestack.Edit
-            apiKey={apiKey}
-            file={file}
-            options={options}
-            sessionCache={true}
-          />
-        </div> */}
+        <Cell>
+          <Grid vertical={false} className='align-center-middle text-center'>
+            <Cell className='auto'>
+              {/* TODO Redux - Add Reducer to Revert button */}
+              <Button color={Colors.SECONDARY}>Revert</Button>
+            </Cell>
+            <Cell className='auto'>
+              {/* TODO Redux - Add Reducer to Apply button */}
+              <Button color={Colors.PRIMARY}>Apply</Button>
+            </Cell>
+            <Cell className='auto'>
+              {/* TODO Redux - Add Reducer to Save button */}
+              <Button color={Colors.WARNING}>Save</Button>
+            </Cell>
+          </Grid>
+        </Cell>
+
 
       </Grid>
-    </div>
+
     );
   };
 }

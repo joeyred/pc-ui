@@ -14,13 +14,13 @@ import { MdFileUpload, MdAddShoppingCart } from 'react-icons/md';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import GalleryActionCreators from '../redux/actions/gallery';
+import ImageActionCreators from '../redux/actions/image';
 
 import ImageList from '../components/ImageList';
 
 const mapStateToProps = (state) => (
   {
-    images: state.gallery.images
+    images: state.image.images
   }
 );
 
@@ -33,18 +33,21 @@ class Gallery extends Component {
       <div>
         {/* Top Bar */}
         <TopBar>
-          <TopBarLeft>
-            {/* TODO Add onClick */}
-            <Button color={Colors.SECONDARY}>
-              <MdFileUpload /> Upload More Images
-            </Button>
-          </TopBarLeft>
+          <Grid className='full'>
+            <Cell className='small-6'>
+              {/* TODO Add onClick */}
+              <Button color={Colors.SECONDARY} size='small'>
+                <MdFileUpload /> Upload More Images
+              </Button>
+            </Cell>
 
-          <TopBarRight>
-            <Button color={Colors.PRIMARY}>
-              <MdAddShoppingCart /> Add to Cart
-            </Button>
-          </TopBarRight>
+            <Cell className='auto'>
+              <Button color={Colors.PRIMARY} size='small'>
+                {/* TODO Add onClick */}
+                <MdAddShoppingCart /> Add to Cart
+              </Button>
+            </Cell>
+          </Grid>
         </TopBar>
         {/* Main Gallery */}
         <Grid>
@@ -60,4 +63,4 @@ class Gallery extends Component {
   }
 }
 
-export default Gallery;
+export default connect(mapStateToProps)(Gallery);

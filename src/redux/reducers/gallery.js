@@ -1,4 +1,5 @@
 import * as GalleryActionTypes from '../actiontypes/gallery';
+import imgMock from '../../imgs/IMG_0408.jpg';
 
 const initialState = {
   images: [
@@ -11,7 +12,7 @@ const initialState = {
         "originalPath":"picker_transformation.png",
         "size":1277297,
         "source":"local_file_system",
-        "url":"https://cdn.filestackcontent.com/AFrHW1QRsWxmu5ZLU2qg",
+        "url": imgMock,
         "uploadId":"cfcc198e63b7328c17f09f1af519fcdf",
         "originalFile":{
           "name":"myfile",
@@ -27,7 +28,9 @@ const initialState = {
 export default function Gallery(state=initialState, action) {
   switch(action.type) {
     case GalleryActionTypes.ADD_IMAGES: {
-
+      return {
+        ...state
+      };
     }
     default: {
       return state;

@@ -12,9 +12,7 @@ import styles from './ImageEditor.module.scss';
 
 class ImageEditor extends Component {
   static defaultProps = {};
-  static propTypes = {
-
-  };
+  static propTypes = {};
   constructor(props) {
     super(props);
     this.artboardRef = React.createRef();
@@ -28,7 +26,12 @@ class ImageEditor extends Component {
     } = this.props;
     const ref = this.artboardRef.current;
     console.log(ref.width, ref.height);
-    const dimensions = aspectRatioFill(aspectRatioArray[0], aspectRatioArray[1], ref.offsetWidth, ref.offsetHeight);
+    const dimensions = aspectRatioFill(
+      aspectRatioArray[0],
+      aspectRatioArray[1],
+      ref.offsetWidth,
+      ref.offsetHeight
+    );
     const cropBox = _.extend(crop, {height: dimensions.height, width: dimensions.width});
     storeImageDimensions([ref.offsetWidth, ref.offsetHeight]);
     updateCrop(cropBox);
