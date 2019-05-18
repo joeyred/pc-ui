@@ -1,0 +1,19 @@
+@import '../../styles/foundation/settings';
+@import '../../styles/theme';
+
+.container {
+  display: flex;
+  flex-flow: row nowrap;
+  box-shadow: $global_box-shadow;
+}
+
+.button {
+  border: none;
+  background: $primary-color;
+  padding: 0.625rem 0.75rem;
+}
+
+.count {
+  padding: 0.625rem 2rem;
+  background: $white;
+}

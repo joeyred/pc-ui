@@ -7,11 +7,18 @@ import { storiesOf, addDecorator } from '@storybook/react';
 import Filestack from '../components/Filestack';
 import PictureFrame from '../components/FrameSelector/PictureFrame';
 import FrameSelector from '../components/FrameSelector';
-import Thumbnail from '../components/UploadThumbnail';
+import UploadThumbnail from '../components/UploadThumbnail';
+import ImageList from '../components/ImageList';
+import Counter from '../components/Counter';
 
-import styles from './foundation.module.scss';
+import './foundation.scss';
 
-addDecorator((storyFn) => <div className={styles.storybook}>{storyFn()}</div>);
+import imgMock from '../imgs/mock-img-vertical.jpg';
+
+import '../components/Thumbnail/Thumbnail.story.jsx';
+import '../components/SquareContainer/SquareContainer.story';
+import '../components/Product/Product.story';
+import '../components/ImageList/ImageList.story';
 
 storiesOf('Frame', module)
 .add('8x16', () => {
@@ -53,12 +60,60 @@ storiesOf('Filestack', module)
   );
 })
 ;
-const imageExample = 'https://cdn.filestackcontent.com/UfxVvzDDTkqquiJL3CSI';
-storiesOf('Thumbnail', module)
-.addDecorator((story) =>
-  <div style={{width: '200px', height: '200px', padding: '1rem'}}>
-    {story()}
-  </div>
-)
-.add('unedited', () => <Thumbnail src={imageExample} isEdited={false} />)
-.add('edited', () => <Thumbnail src={imageExample} isEdited={true} />);
+// storiesOf('Thumbnail', module)
+// .addDecorator((story) =>
+//   <div style={{width: '30%', padding: '1rem'}}>
+//     {story()}
+//   </div>
+// )
+// .add('unedited', () => <UploadThumbnail src={imgMock} isEdited={false} />)
+// .add('edited', () => <UploadThumbnail src={imgMock} isEdited={true} />);
+// const mockFactory = (image) => {
+//   const {
+//     edited,
+//     handle,
+//     url
+//   } = image;
+//   return {
+//     edited,
+//     handle,
+//     url,
+//   };
+// }
+// const images = [
+//   {
+//     edited: true,
+//     handle: 'xyxtxyeirhfhfudj',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'iadifdhshgweghhdf',
+//     url: imgMock
+//   },
+//   {
+//     edited: true,
+//     handle: 'sjkfoishbaskjldg',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'audfiughsdhfisbd',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'uydydbgfhufhfhffg',
+//     url: imgMock
+//   },
+//   {
+//     edited: true,
+//     handle: 'odiuddnfgfttdgddd',
+//     url: imgMock
+//   },
+// ];
+// storiesOf('ImageList', module)
+// .add('default per row', () => <ImageList images={images} />);
+
+storiesOf('Counter', module)
+.add('basic', () => <Counter count={3} updateCount={() => console.log('yay button')} />);

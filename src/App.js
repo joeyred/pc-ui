@@ -1,40 +1,39 @@
 import React, { Component } from 'react';
+// import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+// import * as NavActionCreators from '../redux/actions/nav';
 
-import {
-  TopBar,
-  TopBarLeft,
-  Menu,
-  MenuItem,
-} from 'react-foundation';
+// import {
+//   TopBar,
+//   TopBarLeft,
+//   Menu,
+//   MenuItem,
+// } from 'react-foundation';
 
 import Edit from './views/Edit';
 import Gallery from './views/Gallery';
 import Upload from './views/Upload';
 
-// import './styles/foundation/main.scss';
+import './styles/foundation/global_include.scss';
 import styles from './App.module.scss';
 
+const mapStateToProps = (state) => (
+  {
+    currentView: state.nav.currentView
+  }
+);
 
 class App extends Component {
-  state = {
-    currentView: 'edit'
-  };
-  updateView(viewName) {
-    this.setState({currentView: viewName})
-  }
+
   render() {
-    const items = [
-      { key: 'upload', name: 'Upload', onClick: () => this.updateView('upload')},
-      { key: 'gallery', name: 'Gallery', onClick: () => this.updateView('gallery') },
-      { key: 'edit', name: 'Edit', onClick: () => this.updateView('edit') }
-    ];
+    const {currentView} = this.props
     return (
       <div className={styles.App}>
-        <TopBar>
+        {/* <TopBar>
           <TopBarLeft>
             <Menu>
               {items.map((item) => (
-                <MenuItem isActive={item.key === this.state.currentView} key={item.key} >
+                <MenuItem isActive={item.key === currentView} key={item.key} >
                   <a onClick={item.onClick}>
                     {item.name}
                   </a>
@@ -42,12 +41,12 @@ class App extends Component {
               ))}
             </Menu>
           </TopBarLeft>
-        </TopBar>
+        </TopBar> */}
 
         {
-          this.state.currentView === 'upload' ? <Upload /> :
-          this.state.currentView === 'gallery' ? <Gallery /> :
-          this.state.currentView === 'edit' ? <Edit />  :
+          currentView === 'upload' ? <Upload /> :
+          currentView === 'gallery' ? <Gallery /> :
+          currentView === 'edit' ? <Edit />  :
           null
         }
       </div>
@@ -55,4 +54,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps)(App);

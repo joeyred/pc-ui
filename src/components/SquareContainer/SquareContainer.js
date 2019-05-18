@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import classnames from 'classnames';
+
 import styles from './SquareContainer.module.scss';
 
 const SquareContainer = (props) => {
@@ -9,14 +11,20 @@ const SquareContainer = (props) => {
     overflow
   } = props;
 
-  const css = centerContent ?
-    `${styles.container} ${styles['center-content']}` :
+  const containerClasses = classnames(
+    props.className ? props.className : null,
     styles.container
-  ;
-  const style = overflow ? {overflow: 'hidden'} : null;
+  );
+
+  const contentClasses = classnames(
+    centerContent ? styles['center-content'] : null,
+    overflow ? null : styles['overflow-hidden'],
+    styles.content
+  );
+  const style = props.style ? props.style : null;
   return (
-    <div style={style} className={styles.container}>
-      <div className={css}>
+    <div style={style} className={containerClasses}>
+      <div className={contentClasses}>
         {props.children}
       </div>
     </div>

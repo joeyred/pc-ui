@@ -7,7 +7,10 @@ import {
   createStore,
   combineReducers
 } from 'redux';
+import NavReducer from './redux/reducers/nav';
 import EditReducer from './redux/reducers/edit';
+import GalleryReducer from './redux/reducers/gallery';
+import ImageReducer from './redux/reducers/image';
 // Components
 import App from './App';
 // Util
@@ -17,7 +20,7 @@ import './index.css';
 
 // TODO - Shopify API
 // Replace hardwired API key with a fetch reducer
-function filestack(state = {apiKey: 'AA1ZGkqsZT1Ca96rjT6mKz'}, action) {
+function filestack(state = {apiKey: 'AkrGfLiFXRI6s2gfwYnvBz'}, action) {
   switch (action.type) {
     case 'UPDATE_API_KEY': {
       const apiKey = action.apiKey;
@@ -30,7 +33,10 @@ function filestack(state = {apiKey: 'AA1ZGkqsZT1Ca96rjT6mKz'}, action) {
 }
 
 const rootReducer = combineReducers({
-  edit: EditReducer,
+  nav:     NavReducer,
+  edit:    EditReducer,
+  gallery: GalleryReducer,
+  image:   ImageReducer,
   filestack
 });
 
