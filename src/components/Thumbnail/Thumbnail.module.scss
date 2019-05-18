@@ -1,0 +1,40 @@
+// @mixin size($_name, $_value) {
+//   .size--#{$_name} {
+//     height: $_value;
+//     width: $_value;
+//   }
+// }
+// TODO Add responsive sizing
+// .container {
+//   position: relative;
+//   overflow: hidden;
+//   height: 10rem;
+//   width: 10rem;
+//   // &::after {
+//   //   content: ' ';
+//   //   display: block;
+//   //   padding-bottom: 100%;
+//   // }
+//   img {
+//     position: absolute;
+//     left: 50%;
+//     top: 50%;
+//     height: 100%;
+//     width: auto;
+//     transform: translate(-50%,-50%);
+//
+//     &.portrait {
+//       width: 100%;
+//       height: auto;
+//     }
+//   }
+// }
+
+.container {
+  position: absolute;
+  img {
+    // position: absolute;
+    width: 100%;
+    height: auto;
+  }
+}
