@@ -13,9 +13,11 @@ import Counter from '../components/Counter';
 
 import './foundation.scss';
 
-import imgMock from '../imgs/IMG_0408.jpg';
+import imgMock from '../imgs/mock-img-vertical.jpg';
 
-// addDecorator((storyFn) => <div className={styles.storybook}>{storyFn()}</div>);
+import '../components/Thumbnail/Thumbnail.story.jsx';
+import '../components/SquareContainer/SquareContainer.story';
+import '../components/Product/Product.story';
 
 storiesOf('Frame', module)
 .add('8x16', () => {
