@@ -28,6 +28,7 @@ class Counter extends Component {
   updateCount(direction) {
     const {
       updateCountHandler,
+      id,
     } = this.props;
     let count = updateCountHandler ? this.props.count : this.state.count;
     if (direction === 'increase') {
@@ -38,7 +39,7 @@ class Counter extends Component {
     }
 
     if (updateCountHandler) {
-      updateCountHandler(count);
+      updateCountHandler(count, id);
     } else {
       this.setState({ count });
     }
