@@ -39,7 +39,7 @@ class Counter extends Component {
     }
 
     if (updateCountHandler) {
-      updateCountHandler(count, id);
+      updateCountHandler(id, count);
     } else {
       this.setState({ count });
     }

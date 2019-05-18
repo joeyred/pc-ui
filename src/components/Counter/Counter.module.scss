@@ -1,8 +1,10 @@
 @import '../../styles/foundation/settings';
+@import '../../styles/theme';
 
 .container {
   display: flex;
   flex-flow: row nowrap;
+  box-shadow: $global_box-shadow;
 }
 
 .button {
