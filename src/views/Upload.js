@@ -5,6 +5,13 @@ import { connect } from 'react-redux';
 import * as ImageActionCreators from '../redux/actions/image';
 import * as NavActionCreators from '../redux/actions/nav';
 
+import {
+  Grid,
+  Cell,
+  TopBar,
+  TopBarLeft,
+} from 'react-foundation';
+
 import Filestack from '../components/Filestack';
 
 const mapStateToProps = (state) => (
@@ -44,12 +51,25 @@ class Upload extends Component {
     };
 
     return (
-      <Filestack.Upload
-        apiKey={apiKey}
-        options={options}
-        onFileUploadSuccess={addImage}
-        onSuccess={this.onSuccess}
-      />
+      <div style={{height: '100%', width: '100%'}}>
+        {/* Top Bar */}
+        <TopBar style={{zIndex: '99999999999999'}}>
+          <TopBarLeft>
+            <div className='text-center'>
+              <span className='menu-text'>Select Images to Upload</span>
+            </div>
+          </TopBarLeft>
+        </TopBar>
+
+        <Filestack.Upload
+          apiKey={apiKey}
+          options={options}
+          onFileUploadSuccess={addImage}
+          onSuccess={this.onSuccess}
+        />
+
+      </div>
+
     );
   }
 }

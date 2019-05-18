@@ -12,6 +12,9 @@ const Icon = (props) => {
     inline
   } = props;
   const Element = MdIcons[`Md${name}`];
+  // const icon = `Md${name}`;
+  //
+  // const { icon: Element} = require(`react-icons/md`);
 
   const className = classnames(
     inline ? styles['inline-block'] : styles.block,

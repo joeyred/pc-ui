@@ -7,7 +7,10 @@ import _ from 'lodash';
 // import imgMock from '../../imgs/IMG_0408.jpg';
 
 const initialState = {
-  images: []
+  images: {
+    byId: {},
+    allIds: []
+  },
 };
 
 export default function Image(state=initialState, action) {

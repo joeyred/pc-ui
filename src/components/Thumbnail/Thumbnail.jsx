@@ -36,6 +36,7 @@ class Thumbnail extends Component {
       imgWidth: null,
     };
   }
+  // TODO Move this to the constructor?
   componentDidMount() {
     const landscape = this.image.current.offsetHeight < this.image.current.offsetWidth;
     this.setState({

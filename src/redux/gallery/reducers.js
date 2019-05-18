@@ -1,5 +1,5 @@
-import * as GalleryActionTypes from '../actiontypes/gallery';
-import imgMock from '../../imgs/mock-img-vertical.jpg';
+import * as GalleryActionTypes from './actiontypes';
+// import imgMock from '../../../imgs/mock-img-vertical.jpg';
 
 const initialState = {
   isEditing: true

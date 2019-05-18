@@ -38,3 +38,9 @@ export const markImageAsEdited = handle => {
     handle
   };
 };
+
+export const updateEditMode = () => {
+  return {
+    type: GalleryActionTypes.UPDATE_EDIT_MODE,
+  };
+};

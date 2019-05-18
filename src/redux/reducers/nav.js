@@ -3,7 +3,7 @@ import {
 } from '../actiontypes/nav';
 
 const initialState = {
-  currentView: 'upload'
+  currentView: 'gallery'
 }
 
 export default function Nav(state=initialState, action) {

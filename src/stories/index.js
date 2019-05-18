@@ -18,6 +18,7 @@ import imgMock from '../imgs/mock-img-vertical.jpg';
 import '../components/Thumbnail/Thumbnail.story.jsx';
 import '../components/SquareContainer/SquareContainer.story';
 import '../components/Product/Product.story';
+import '../components/ImageList/ImageList.story';
 
 storiesOf('Frame', module)
 .add('8x16', () => {
@@ -59,14 +60,14 @@ storiesOf('Filestack', module)
   );
 })
 ;
-storiesOf('Thumbnail', module)
-.addDecorator((story) =>
-  <div style={{width: '30%', padding: '1rem'}}>
-    {story()}
-  </div>
-)
-.add('unedited', () => <UploadThumbnail src={imgMock} isEdited={false} />)
-.add('edited', () => <UploadThumbnail src={imgMock} isEdited={true} />);
+// storiesOf('Thumbnail', module)
+// .addDecorator((story) =>
+//   <div style={{width: '30%', padding: '1rem'}}>
+//     {story()}
+//   </div>
+// )
+// .add('unedited', () => <UploadThumbnail src={imgMock} isEdited={false} />)
+// .add('edited', () => <UploadThumbnail src={imgMock} isEdited={true} />);
 // const mockFactory = (image) => {
 //   const {
 //     edited,
@@ -79,40 +80,40 @@ storiesOf('Thumbnail', module)
 //     url,
 //   };
 // }
-const images = [
-  {
-    edited: true,
-    handle: 'xyxtxyeirhfhfudj',
-    url: imgMock
-  },
-  {
-    edited: false,
-    handle: 'iadifdhshgweghhdf',
-    url: imgMock
-  },
-  {
-    edited: true,
-    handle: 'sjkfoishbaskjldg',
-    url: imgMock
-  },
-  {
-    edited: false,
-    handle: 'audfiughsdhfisbd',
-    url: imgMock
-  },
-  {
-    edited: false,
-    handle: 'uydydbgfhufhfhffg',
-    url: imgMock
-  },
-  {
-    edited: true,
-    handle: 'odiuddnfgfttdgddd',
-    url: imgMock
-  },
-];
-storiesOf('ImageList', module)
-.add('default per row', () => <ImageList images={images} />);
+// const images = [
+//   {
+//     edited: true,
+//     handle: 'xyxtxyeirhfhfudj',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'iadifdhshgweghhdf',
+//     url: imgMock
+//   },
+//   {
+//     edited: true,
+//     handle: 'sjkfoishbaskjldg',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'audfiughsdhfisbd',
+//     url: imgMock
+//   },
+//   {
+//     edited: false,
+//     handle: 'uydydbgfhufhfhffg',
+//     url: imgMock
+//   },
+//   {
+//     edited: true,
+//     handle: 'odiuddnfgfttdgddd',
+//     url: imgMock
+//   },
+// ];
+// storiesOf('ImageList', module)
+// .add('default per row', () => <ImageList images={images} />);
 
 storiesOf('Counter', module)
 .add('basic', () => <Counter count={3} updateCount={() => console.log('yay button')} />);

@@ -19,13 +19,14 @@ import Icon from '../components/Icon';
 
 // import Filestack from '../components/Filestack';
 import FrameSelector from '../components/FrameSelector';
+import Toolbar from '../components/Toolbar';
 import ImageEditor from '../components/ImageEditor';
 
 import styles from './Edit.module.scss';
 import 'react-image-crop/lib/ReactCrop.scss';
 
 // Mock
-import mockImg from '../imgs/IMG_0408.jpg';
+import mockImg from '../imgs/mock-img-vertical.jpg';
 
 const mapStateToProps = (state) => (
   {
@@ -61,7 +62,7 @@ class Edit extends Component {
     const updateSelectedFrame = bindActionCreators(EditActionCreators.updateSelectedFrame, dispatch);
     const updateCrop = bindActionCreators(EditActionCreators.updateCrop, dispatch);
     const storeImageDimensions = bindActionCreators(EditActionCreators.storeImageDimensions, dispatch);
-    const aspectRatio = selectedFrame[0]/selectedFrame[1];
+    // const aspectRatio = selectedFrame[0]/selectedFrame[1];
     // const options = {
     //   transformations: {
     //     crop: {
@@ -112,33 +113,32 @@ class Edit extends Component {
           />
         </Cell>
         <Cell>
-          {/* TODO Replace with a Toolbar Component */}
-          <div className={styles.toolbar}>
-            <Button>
-              <Icon name='Crop' inline={false} className={styles.icon} />
-              <span>Crop</span>
-            </Button>
-            <ButtonGroup>
-              <Button>
-                <Icon name='ZoomIn' inline={false} className={styles.icon} />
-                <span>In</span>
-              </Button>
-              <Button>
-                <Icon name='ZoomOut' inline={false} className={styles.icon} />
-                <span>Out</span>
-              </Button>
-            </ButtonGroup>
-            <ButtonGroup>
-              <Button>
-                <Icon name='RotateLeft' inline={false} className={styles.icon} />
-                <span>Left</span>
-              </Button>
-              <Button>
-                <Icon name='RotateRight' inline={false} className={styles.icon} />
-                <span>Right</span>
-              </Button>
-            </ButtonGroup>
-          </div>
+          <Toolbar>
+            <Toolbar.Button
+              icon='Crop'
+              label='Crop'
+            />
+            <Toolbar.Group label='Zoom'>
+              <Toolbar.Button
+                icon='ZoomIn'
+                label='In'
+              />
+              <Toolbar.Button
+                icon='ZoomOut'
+                label='Out'
+              />
+            </Toolbar.Group>
+            <Toolbar.Group label='Rotate'>
+              <Toolbar.Button
+                icon='RotateLeft'
+                label='Left'
+              />
+              <Toolbar.Button
+                icon='RotateRight'
+                label='Right'
+              />
+            </Toolbar.Group>
+          </Toolbar>
         </Cell>
         <Cell>
           <Grid vertical={false} className='align-center-middle text-center'>

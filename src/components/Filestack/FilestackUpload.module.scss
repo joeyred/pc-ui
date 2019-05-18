@@ -4,21 +4,55 @@
 /// This is due to the fact that there is no reason to hide such a small and easy to
 /// access set of buttons.
 
+@import '../../styles/foundation/_settings';
+@import '../../../node_modules/foundation-sites/scss/foundation';
+
 .overrides {
+  // Main Container Injected by Filstack
+  :global(.fsp-picker) {
+    background: $white;
+    color: $body-font-color;
+
+  }
+  // Headers
+  :global(.fsp-text__title) {
+    font-family: $header-font-family;
+    line-height: $header-lineheight;
+    color: #ed4040;
+  }
+  // Sub-Header
+  :global(.fsp-text__subheader) {
+    color: $body-font-color;
+  }
+
+  :global(.fsp-button) {
+    @include button;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    // background-color: $primary-color;
+    // border-radius: 0;
+
+  }
+
   :global(.fsp-modal__sidebar) {
+    background: $light-gray;
     display: block;
     width: 60px;
     // No need to create room for a mobile hamburger menu icon
     top: 0;
 
-    &:hover {
-      width: 240px;
-    }
+    // &:hover {
+    //   width: 240px;
+    // }
   }
+
   :global(.fsp-modal__body) {
     width: calc(100% - 60px);
     // This takes care of the body content moving under the sidebar
     left: 60px;
+  }
+  :global(.fsp-header) {
+    display: none;
   }
   :global(.fsp-mobile-menu) {
     // No need to display the mobile menu icon
