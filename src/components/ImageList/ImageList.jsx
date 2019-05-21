@@ -34,9 +34,11 @@ const ImageList = (props) => {
     props.className
   );
 
-  const thumbnails = images.map(image => (
+  const thumbnails = _.map(images.allIds, id => {
+    const image = images.byId[id];
+    return (
     isEditing ?
-      <Cell key={image.handle} style={{textAlign: 'center', marginBottom: '1rem'}}>
+      <Cell key={image.id} style={{textAlign: 'center', marginBottom: '1rem'}}>
         <Product
           src={image.url}
           isEdited={image.edited}
@@ -45,7 +47,7 @@ const ImageList = (props) => {
 
         />
       </Cell> : image.edited ?
-      <Cell key={image.handle} style={{textAlign: 'center', marginBottom: '1rem'}}>
+      <Cell key={image.id} style={{textAlign: 'center', marginBottom: '1rem'}}>
         <Product
           src={image.url}
           isEdited={image.edited}
@@ -53,11 +55,11 @@ const ImageList = (props) => {
           frame={image.frame}
         />
         <div className={styles.counter}>
-          <Counter id={image.handle} handleCountUpdate={handleCountUpdate} count={image.count} />
+          <Counter id={image.id} handleCountUpdate={handleCountUpdate} count={image.count} />
         </div>
       </Cell> : null
-
-  ));
+    );
+  });
   return (
     <Grid className={className} alignX='center' alignY='middle'>
       {thumbnails}
