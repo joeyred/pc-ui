@@ -9,22 +9,27 @@ import {
 const initialState = {
   frames: {
     '01': {
+      id: '01'
       display: [8, 8],
       exact: [7.75, 7.75]
     },
     '02': {
+      id: '02'
       display: [8, 12],
       exact: [7.75, 11.75]
     },
     '03': {
+      id: '03'
       display: [12, 8],
       exact: [11.75, 7.75]
     },
     '04': {
+      id: '04'
       display: [8, 16],
       exact: [7.75, 15.75]
     },
     '05': {
+      id: '05'
       display: [16, 8],
       exact: [15.75, 7.75]
     },
