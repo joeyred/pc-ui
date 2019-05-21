@@ -1,9 +1,10 @@
 import {
   ADD_IMAGE,
   REMOVE_IMAGE,
-  EDIT_IMAGE
+  SAVE_EDIT,
 } from '../actiontypes/image';
 import _ from 'lodash';
+
 // import imgMock from '../../imgs/IMG_0408.jpg';
 
 const initialState = {
@@ -19,61 +20,76 @@ export default function Image(state=initialState, action) {
     // Add a check to make sure the handle of the image doesnt match
     // previously uploaded images.
     case ADD_IMAGE: {
-      const imageListAdd = [
-        ...state.images,
-        {
-          edited:   false,
-          filename: action.image.filename,
-          handle:   action.image.handle,
-          url:      action.image.url,
-          mimetype: action.image.mimetype,
-          edits:    {
-            current: null,
-            history: []
-          },
-          metadata: action.image
-        }
-      ];
+      const {
+        id,
+        filename,
+        handle,
+        url,
+        mimetype,
+      } = action.payload;
+
       return {
         ...state,
-        images: imageListAdd
+        images: {
+          byId: {
+            ...state.images.byId,
+            [id]: {
+              id,
+              edited: false,
+              filename,
+              handle,
+              url,
+              mimetype,
+              currentSavedEditId: null,
+              edits: [],
+            },
+          },
+          allIds: [
+            ...state.images.allIds,
+            id,
+          ],
+        },
       };
     }
     case REMOVE_IMAGE: {
-      const RemoveImageIndex = _.indexOf(state.images, {handle: action.handle});
-      const imageListRemove = [
+      const RemoveImageIndex = _.indexOf(state.images.allIds, action.id);
+      const newList = [
         ...state.images.slice(0, RemoveImageIndex),
 				...state.images.slice(RemoveImageIndex + 1)
       ];
+      const newImagesById = _.omit(state.images.byId, action.id);
       return {
         ...state,
-        images: imageListRemove
-      }
-    }
-    case EDIT_IMAGE: {
-      const EditImageIndex = _.indexOf(state.images, {handle: action.handle});
-      // parse edits
-      const edits = {
-        ...state.image[EditImageIndex].edits,
-        ...action.edits
-      };
-      // update image object
-      const imageListEdit = [
-        ...state.images.slice(0, EditImageIndex),
-        {
-          ...state.images[EditImageIndex],
-          edits
+        images: {
+          byId: newImagesById,
+          allIds: newList,
         },
-				...state.images.slice(EditImageIndex + 1)
-      ];
+      };
+    }
+    case SAVE_EDIT: {
+      const {
+        imageId,
+        editId
+      } = action;
       return {
         ...state,
-        images: imageListEdit
-      }
+        images: {
+          byId: {
+            ...state.images.byId,
+            [imageId]: {
+              ...state.images.byId[imageId],
+              currentSavedEditId: editId,
+              edits: [
+                editId,
+                ...state.images.byId[imageId].edits,
+              ],
+            },
+          },
+        },
+      };
     }
     default: {
       return state;
     }
   }
-
 }

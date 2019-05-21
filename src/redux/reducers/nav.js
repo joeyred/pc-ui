@@ -3,8 +3,18 @@ import {
 } from '../actiontypes/nav';
 
 const initialState = {
-  currentView: 'gallery'
-}
+  currentView: 'gallery',
+  modal: {
+    active: false,
+    message: null,
+  },
+  crouton: {
+    active: false,
+    id: null,
+    message: null,
+    type: null,
+  },
+};
 
 export default function Nav(state=initialState, action) {
   switch(action.type) {
