@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+
+import _ from 'lodash';
 
 import {
   TopBar,
   TopBarLeft,
-  TopBarRight,
+  // TopBarRight,
   Button,
   Grid,
   GridContainer,
@@ -16,7 +18,7 @@ import Icon from '../components/Icon';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as ImageActionCreators from '../redux/actions/image';
+// import * as ImageActionCreators from '../redux/actions/image';
 import * as GalleryActionCreators from '../redux/actions/gallery';
 
 import ImageList from '../components/ImageList';
@@ -26,17 +28,22 @@ import styles from './Gallery.module.scss';
 const mapStateToProps = (state) => (
   {
     images: state.image.images,
-    isEditing: state.gallery.isEditing
+    isEditing: state.gallery.isEditing,
+    imageHasBeenEdited: state.gallery.imageHasBeenEdited,
   }
 );
 
 class Gallery extends Component {
+
   render() {
     const {
       images,
       isEditing,
       dispatch
     } = this.props;
+    // Check if an image has been edited
+    const imageHasBeenEdited = (_.filter(images.byId, {edited: true}).length > 0);
+    // console.log(imageHasBeenEdited);
 
     const updateEditMode = bindActionCreators(GalleryActionCreators.updateEditMode, dispatch);
 
@@ -58,16 +65,19 @@ class Gallery extends Component {
 
     const DoneEditing = isEditing ?
       <Cell className='auto'>
-        <Button color={Colors.PRIMARY} size='small' onClick={() => updateEditMode()}>
-          {/* TODO Add onClick */}
+        <Button
+          color={Colors.PRIMARY}
+          size='small'
+          onClick={() => updateEditMode()}
+          isDisabled={!imageHasBeenEdited}
+        >
           Done Editing <Icon name='ArrowForward' />
         </Button>
       </Cell> : null;
 
     const BackToEditing = isEditing ? null :
     <Cell className='auto'>
-      <Button color={Colors.SECONDARY} size='small' onClick={updateEditMode}>
-        {/* TODO Add onClick */}
+      <Button color={Colors.SECONDARY} size='small' onClick={() => updateEditMode()}>
         <Icon name='ModeEdit' /> Back to Editing
       </Button>
     </Cell>;
