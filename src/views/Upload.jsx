@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as ImageActionCreators from '../redux/actions/image';
-import * as NavActionCreators from '../redux/actions/nav';
-
 import {
-  Grid,
-  Cell,
+  // Grid,
+  // Cell,
   TopBar,
   TopBarLeft,
 } from 'react-foundation';
+
+import * as ImageActionCreators from '../redux/actions/image';
+import * as NavActionCreators from '../redux/actions/nav';
 
 import Filestack from '../components/Filestack';
 
@@ -24,6 +24,7 @@ class Upload extends Component {
   static propTypes = {
     apiKey: PropTypes.string.isRequired,
   }
+
   onSuccess = (res) => {
     const {
       dispatch
@@ -32,6 +33,7 @@ class Upload extends Component {
     console.log(res);
     updateView('gallery');
   }
+
   render() {
     const {
       apiKey,

@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as EditActionCreators from '../redux/actions/edit';
-// import ReactCrop from 'react-image-crop';
-
 import {
   Grid,
   Cell,
   Button,
-  ButtonGroup,
+  // ButtonGroup,
   TopBar,
   TopBarLeft,
   Colors
 } from 'react-foundation';
+
+import * as EditActionCreators from '../redux/actions/edit';
+// import ReactCrop from 'react-image-crop';
+
+
 
 import Icon from '../components/Icon';
 
@@ -30,7 +32,7 @@ import mockImg from '../imgs/mock-img-vertical.jpg';
 
 const mapStateToProps = (state) => (
   {
-    apiKey: state.filestack.apiKey,
+    // apiKey: state.filestack.apiKey,
     frames: state.edit.frames,
     activeFrameIndex: state.edit.selectedFrameIndex,
     selectedFrame: state.edit.selectedFrame,
@@ -50,11 +52,11 @@ class Edit extends Component {
   render() {
     // console.log(this.props);
     const {
-      apiKey,
+      // apiKey,
       frames,
       activeFrameIndex,
       selectedFrame,
-      file,
+      // file,
       dispatch,
       crop
     } = this.props;
