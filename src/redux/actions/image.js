@@ -1,10 +1,10 @@
+import uniqid from 'uniqid';
 import {
   ADD_IMAGE,
   REMOVE_IMAGE,
   SAVE_EDIT,
+  REMOVE_EDIT
 } from '../actiontypes/image';
-
-import uniqid from 'uniqid';
 
 /**
  * Add Image object to images array
@@ -12,12 +12,7 @@ import uniqid from 'uniqid';
  * @param  {Object}  image - Array of metadata objects to be parsed.
  */
 export const addImage = image => {
-  const {
-    filename,
-    handle,
-    url,
-    mimetype,
-  } = image;
+  const { filename, handle, url, mimetype } = image;
   const id = uniqid();
   return {
     type: ADD_IMAGE,
@@ -26,7 +21,7 @@ export const addImage = image => {
       filename,
       handle,
       url,
-      mimetype,
+      mimetype
     }
   };
 };
@@ -43,10 +38,17 @@ export const removeImage = id => {
   };
 };
 
-export const saveEdit = (imageId, editId) => {
+export const saveEdit = (imageId, productId, previewSrc, transformations) => {
   return {
     type: SAVE_EDIT,
     imageId,
-    editId
+    productId,
+    previewSrc,
+    transformations
   };
 };
+
+export const removeEdit = imageId => ({
+  type: REMOVE_EDIT,
+  imageId
+});

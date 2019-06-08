@@ -1,9 +1,12 @@
 import {
-  UPDATE_VIEW
+  UPDATE_VIEW,
+  UPDATE_APP_VISIBILITY,
 } from '../actiontypes/nav';
+import { Views } from '../../globals';
 
 const initialState = {
-  currentView: 'gallery',
+  appIsVisible: false,
+  currentView: Views.GALLERY,
   modal: {
     active: false,
     message: null,
@@ -22,6 +25,13 @@ export default function Nav(state=initialState, action) {
       return {
         ...state,
         currentView: action.view
+      };
+    }
+    case UPDATE_APP_VISIBILITY: {
+      return {
+        ...state,
+        appIsVisible: action.visible,
+        currentView: action.view,
       }
     }
     default: {

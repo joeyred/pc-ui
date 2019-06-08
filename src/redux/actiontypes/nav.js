@@ -1,1 +1,2 @@
 export const UPDATE_VIEW = 'nav/UPDATE_VIEW';
+export const UPDATE_APP_VISIBILITY = 'nav/UPDATE_APP_VISIBILITY';

@@ -13,6 +13,11 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"
+    />
+    <!-- <link rel="stylesheet" href="%PUBLIC_URL%/cropshop.css" /> -->
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -22,11 +27,29 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>CropShop</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <button
+        role="button"
+        class="cropshop__button cropshop__button--open"
+        data-cropshop-collection="picfoams"
+        data-cropshop-open="cropshop_app_modal"
+      >
+        PicFoams
+      </button>
+
+      <button
+        role="button"
+        class="cropshop__button cropshop__button--open"
+        data-cropshop-collection="acrylipics"
+        data-cropshop-open="cropshop_app_modal"
+      >
+        AcryliPics
+      </button>
+    </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -37,5 +60,195 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <div
+      class="cropshop__modal__animate"
+      id="cropshop_app_modal"
+      aria-hidden="false"
+    >
+      <!-- Overlay -->
+      <div
+        class="cropshop__modal__overlay"
+        tabindex="-1"
+        data-cropshop-close=""
+      >
+        <!-- Container -->
+        <div class="cropshop__modal__container" role="app" aria-modal="true">
+          <!-- App Container -->
+          <main
+            class="cropshop__modal__content"
+            id="cropshop_app"
+            data-cropshop-collection=""
+          ></main>
+        </div>
+      </div>
+    </div>
+    <script>
+      var CropshopData = {
+        shop: {
+          domain: 'brian-hayes.myshopify.com',
+          name: 'Brian Hayes'
+        },
+        products: [
+          {
+            id: 3693107707956,
+            title: '10x8 AcryliPic',
+            handle: '10x8-acrylipic',
+            price: 2795,
+            collections: [
+              {
+                id: 80106750004,
+                title: 'AcrylicPics',
+                handle: 'acrylicpics'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":0,"height":0},"display":{"width":"0.25","height":"0.25"}}'
+          },
+          {
+            id: 3693105807412,
+            title: '12x8 PicFoam',
+            handle: '12x8-picfoam',
+            price: 1895,
+            collections: [
+              {
+                id: 80106618932,
+                title: 'PicFoam',
+                handle: 'picfoam'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"3","height":"1"},"display":{"width":"1","height":"2"}}'
+          },
+          {
+            id: 3693106200628,
+            title: '16x8 PicFoam',
+            handle: '16x8-picfoam',
+            price: 2195,
+            collections: [
+              {
+                id: 80106618932,
+                title: 'PicFoam',
+                handle: 'picfoam'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"3","height":"2"},"display":{"width":"1","height":"3"}}'
+          },
+          {
+            id: 3693106593844,
+            title: '5x7 AcryliPic',
+            handle: '5x7-acrylipic',
+            price: 1295,
+            collections: [
+              {
+                id: 80106750004,
+                title: 'AcrylicPics',
+                handle: 'acrylicpics'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":0,"height":0},"display":{"width":"0.25","height":0}}'
+          },
+          {
+            id: 3693106987060,
+            title: '6x6 AcryliPic',
+            handle: '6x6-acrylipic',
+            price: 1495,
+            collections: [
+              {
+                id: 80106750004,
+                title: 'AcrylicPics',
+                handle: 'acrylicpics'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"5.75","height":"5.75"},"display":{"width":"6","height":"6"}}'
+          },
+          {
+            id: 3693106855988,
+            title: '7x5 AcryliPic',
+            handle: '7x5-acrylipic',
+            price: 1295,
+            collections: [
+              {
+                id: 80106750004,
+                title: 'AcrylicPics',
+                handle: 'acrylicpics'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"1.75","height":"2.00"},"display":{"width":"2.00","height":"2.00"}}'
+          },
+          {
+            id: 3693107511348,
+            title: '8x10 AcryliPic',
+            handle: '8x10-acrylipic',
+            price: 2795,
+            collections: [
+              {
+                id: 80106750004,
+                title: 'AcrylicPics',
+                handle: 'acrylicpics'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"2.00","height":"2.50"},"display":{"width":"2.25","height":"2.25"}}'
+          },
+          {
+            id: 3693104857140,
+            title: '8x12 PicFoam',
+            handle: '8x12-picfoam',
+            price: 1895,
+            collections: [
+              {
+                id: 80106618932,
+                title: 'PicFoam',
+                handle: 'picfoam'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"8","height":"12"},"display":{"width":"7.75","height":"11.75"}}'
+          },
+          {
+            id: 3693106036788,
+            title: '8x16 PicFoam',
+            handle: '8x16-picfoam',
+            price: 2195,
+            collections: [
+              {
+                id: 80106618932,
+                title: 'PicFoam',
+                handle: 'picfoam'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"1","height":0},"display":{"width":0,"height":0}}'
+          },
+          {
+            id: 1697280131124,
+            title: '8x8 PicFoam',
+            handle: 'picture-8x8',
+            price: 1495,
+            collections: [
+              {
+                id: 78860091444,
+                title: 'Home page',
+                handle: 'frontpage'
+              },
+              {
+                id: 80106618932,
+                title: 'PicFoam',
+                handle: 'picfoam'
+              }
+            ],
+            customFields:
+              '{"exact":{"width":"8.00","height":"8.00"},"display":{"width":"7.75","height":"7.75"}}'
+          }
+        ]
+      };
+      var cropshopStore = 'brian-hayes.myshopify.com';
+    </script>
+    <!-- <script src="https://unpkg.com/micromodal/dist/micromodal.min.js"></script> -->
+    <!-- <script src="%PUBLIC_URL%/cropshop.js"></script> -->
   </body>
 </html>

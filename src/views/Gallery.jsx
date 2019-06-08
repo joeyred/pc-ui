@@ -7,8 +7,9 @@ import _ from "lodash";
 import {
   TopBar,
   TopBarLeft,
-  // TopBarRight,
+  TopBarRight,
   Button,
+  Callout,
   Grid,
   GridContainer,
   Cell,
@@ -16,6 +17,7 @@ import {
 } from "react-foundation";
 
 import Icon from "../components/Icon";
+import CloseModal from '../components/CloseModal';
 import { Views } from '../globals';
 
 // import * as ImageActionCreators from '../redux/actions/image';
@@ -40,7 +42,7 @@ const Gallery = props => {
   } = props;
   // Check if an image has been edited
   const imageHasBeenEdited = _.filter(images.byId, { edited: true }).length > 0;
-  // console.log(imageHasBeenEdited);
+  const imageHasBeenUploaded = images.allIds.length > 0;
 
   const updateEditMode = bindActionCreators(
     GalleryActionCreators.updateEditMode,
@@ -57,7 +59,7 @@ const Gallery = props => {
   );
 
   const imageToEditor = id => {
-    if(_.indexOf(images.allIds, id)) {
+    if(_.indexOf(images.allIds, id) !== -1) {
       setImageInEditor(id);
       updateView(Views.EDIT);
     }
@@ -70,7 +72,6 @@ const Gallery = props => {
     xlarge: 5,
     xxlarge: 6
   };
-
   const AddToCart = (
     <Cell className='auto'>
       <Button color={Colors.PRIMARY} size='small'>
@@ -85,7 +86,7 @@ const Gallery = props => {
       <Button
         color={Colors.PRIMARY}
         size='small'
-        onClick={() => updateEditMode()}
+        onClick={() => updateEditMode(false)}
         isDisabled={!imageHasBeenEdited}
       >
         Done Editing <Icon name='ArrowForward' />
@@ -98,11 +99,27 @@ const Gallery = props => {
       <Button
         color={Colors.SECONDARY}
         size='small'
-        onClick={() => updateEditMode()}
+        onClick={() => updateEditMode(true)}
       >
         <Icon name='ModeEdit' /> Back to Editing
       </Button>
     </Cell>
+  );
+  const NoImagesCallout = imageHasBeenUploaded ? null : (
+    <Callout color={Colors.ALERT}>
+      <h5>No Images Have Been Uploaded!</h5>
+      <p>
+        It looks like you got to the gallery, but no images have been uploaded yet.
+        Click the button below to get back to the image uploader!
+      </p>
+      <Button
+        color={Colors.PRIMARY}
+        size='small'
+        onClick={() => updateView(Views.UPLOAD)}
+      >
+        <Icon name='FileUpload' /> Upload Images
+      </Button>
+    </Callout>
   );
 
   return (
@@ -110,10 +127,18 @@ const Gallery = props => {
       {/* Top Bar */}
       <TopBar>
         <TopBarLeft>
-          <Button color={Colors.SECONDARY} size='small'>
+          <Button
+            color={Colors.SECONDARY}
+            size='small'
+            onClick={() => updateView(Views.UPLOAD)}
+          >
             <Icon name='FileUpload' /> Upload More Images
           </Button>
         </TopBarLeft>
+
+        <TopBarRight>
+          <CloseModal />
+        </TopBarRight>
       </TopBar>
       {/* Main Gallery */}
       <GridContainer className={styles["content-container"]}>
@@ -133,8 +158,9 @@ const Gallery = props => {
               images={images}
               temsPerRow={responsiveItemsPerRow}
               isEditing={isEditing}
-              clickHandler={imageToEditor}
+              handleClick={imageToEditor}
             />
+            {NoImagesCallout}
           </Cell>
         </Grid>
       </GridContainer>

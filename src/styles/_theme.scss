@@ -1,0 +1,14 @@
+$namespace: 'cropshop';
+
+$modal-class: 'modal';
+$full-class: '#{$namespace}__#{$modal-class}';
+
+$fade-in: #{$namespace}FadeIn;
+$fade-out: #{$namespace}FadeOut;
+$slide-in: #{$namespace}SlideIn;
+$slide-out: #{$namespace}SlideOut;
+
+// offset-x | offset-y | blur-radius | spread-radius | color
+$global_box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.2);
+
+$label_font-family: 'Oswald', sans-serif;

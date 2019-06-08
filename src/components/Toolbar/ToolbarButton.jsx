@@ -33,7 +33,7 @@ ToolbarButton.defaultProps = {
 }
 
 ToolbarButton.propTypes = {
-  clickHandler: () => console.log('button clicked'),
+  // clickHandler: () => console.log('button clicked'),
   icon: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   color: PropTypes.oneOf([

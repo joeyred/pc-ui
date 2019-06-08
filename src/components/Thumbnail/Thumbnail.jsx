@@ -1,18 +1,31 @@
 // React
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // eslint-disable-line
 
 import classnames from 'classnames';
 // Project Componets
-import Icon from '../Icon';
+// import Icon from '../Icon';
 import SquareContainer from '../SquareContainer';
 // import SquareContainer from '../SquareContainer';
 // Styles
 import styles from './Thumbnail.module.scss';
 
+const calcStyleProp = (landscape, height, width) => {
+  const aspectRatio = width / height;
+  if (landscape) {
+    const updatedWidth = width * aspectRatio;
+    return {
+      width: updatedWidth,
+      height: width,
+    }
+  }
+  return null;
+};
+
 class Thumbnail extends Component {
   static defaultProps = {
     fill: true,
+    className: null,
   };
 
   static propTypes = {
@@ -26,7 +39,9 @@ class Thumbnail extends Component {
      * @type {Boolean}
      */
     fill: PropTypes.bool,
+    className: PropTypes.string,
   };
+
   constructor(props) {
     super(props);
     this.image = React.createRef();
@@ -36,6 +51,7 @@ class Thumbnail extends Component {
       imgWidth: null,
     };
   }
+
   // TODO Move this to the constructor?
   componentDidMount() {
     const landscape = this.image.current.offsetHeight < this.image.current.offsetWidth;
@@ -45,34 +61,32 @@ class Thumbnail extends Component {
       imgWidth: this.image.current.offsetWidth,
     });
   }
-  calcStyleProp(landscape, height, width) {
-    const aspectRatio = width / height;
-    if (landscape) {
-      const updatedWidth = width * aspectRatio;
-      return {
-        width: updatedWidth,
-        height: width,
-      }
-    } else {
-      return null;
-    }
-  }
+
+
+
   render() {
     const {
       src,
+      className,
     } = this.props;
+    const {
+      // portrait,
+      landscape,
+      imgHeight,
+      imgWidth,
+    } = this.state;
 
     // Handle any passed inline styles
-    const style = this.props.style ? this.props.style : null;
+    // const style = this.props.style ? this.props.style : null;
 
     // Handle any passed class names
     const containerClasses = classnames(
       styles.container,
-      this.props.className ? this.props.className : null
+      className,
     );
     // Handle addition of portrait class based on image aspect ratio
-    const imageClass = this.state.portrait ? styles.portrait : null;
-    const imgStyle = this.calcStyleProp(this.state.landscape, this.state.imgHeight, this.state.imgWidth);
+    // const imageClass = portrait ? styles.portrait : null;
+    const imgStyle = calcStyleProp(landscape, imgHeight, imgWidth);
     // TODO Handle passing a proper `alt` value
     // return (
     //   <div className={containerClasses} style={style}>
@@ -80,7 +94,7 @@ class Thumbnail extends Component {
     //   </div>
     // );
     return (
-      <SquareContainer centerContent={true} overflow={false}>
+      <SquareContainer centerContent overflow={false}>
         <div className={containerClasses} style={imgStyle}>
           <img ref={this.image} src={src} alt=''  />
         </div>

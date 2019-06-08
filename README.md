@@ -1,13 +1,40 @@
+# CropShop UI
+
+A client-side application built on React and Redux combining image uploading & transformations from filestack via the [Filestack JavaScript SDK](https://github.com/filestack/filestack-js); product information, and shopping cart editing with Shopify's [Storefront API](https://help.shopify.com/en/api/storefront-api) and the [JavaScript Buy SDK](https://help.shopify.com/en/api/storefront-api/tools/js-buy-sdk); as well as a *decent* amount of original code to provide a streamlined and easy user experience for uploading and editing images to be printed on custom materials.
+
+This app was specifically built for [PicFoams™](https://picfoams.com/), and so absolutely none of this code is meant to work in any other situation, and at no point will this repository be updated to support any use case outside of the needs of PicFoams™.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Gotchyas
 
-In the project directory, you can run:
+This is up there because why scroll to the bottom to find out what might have tripped you up?
+
+### Update the API URL in `globals.js`
+
+As the application that is meant to consume the production build of this app, to use the tunneled dev server that hosts the API and Shopify app, the dev value of `appApiUrl` must be updated with the current ngrok url that is active.
+
+```js
+let appApiUrl;
+if (process.env.NODE_ENV === 'production') {
+  appApiUrl = 'example.com';
+} else {
+  // Update this guy here!!!
+  appApiUrl = 'https://834bc032.ngrok.io';
+}
+```
+
+## Installation
+
+*TODO* Fill this in
+
+## Available Scripts
 
 ### `npm start`
 
 Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The current port is set to 8000 so as not to conflict with running a development server for the API that runs on 3000.
+Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
@@ -37,32 +64,22 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Deployment
+
+### Running the proper build script
+
+*TODO* Fill this in
+
+#### React Scripts and Gulp
+
+*TODO* Fill this in
+
+#### Publishing to NPM
+
+*TODO* Fill this in
+
+## Learn More about Create React App
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

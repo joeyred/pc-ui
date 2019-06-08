@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // eslint-disable-line
 
 import * as filestack from 'filestack-js';
-import _ from 'lodash';
+// import _ from 'lodash';
 
 import styles from './FilestackUpload.module.scss';
 
@@ -23,6 +23,7 @@ class Upload extends Component {
     render:              null,
     sessionCache:        false
   }
+
   static propTypes = {
     /**
      * The Filestack API key
@@ -82,6 +83,7 @@ class Upload extends Component {
       .then(this.onFinished)
       .catch(this.onFail);
   }
+
   /**
    * Handles initializing and instance of the picker and mounting it
    * @method mountPicker

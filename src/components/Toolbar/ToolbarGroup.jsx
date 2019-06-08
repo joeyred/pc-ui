@@ -23,11 +23,11 @@ const ToolbarGroup = (props) => {
 }
 
 ToolbarGroup.defaultProps = {
-  label: null
+  label: false
 };
 
 ToolbarGroup.propTypes = {
-  label: PropTypes.oneOfType([PropTypes.string, null]),
+  label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 };
 
 export default ToolbarGroup;

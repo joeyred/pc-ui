@@ -23,9 +23,11 @@
 .deadspace {
   width: 100%;
   text-align: center;
-  background: $dark-gray;
+  background: $medium-gray;
+  overflow: hidden;
 
   :global(.ReactCrop) {
+    overflow: visible;
     margin: 0 0 -5px;
   }
 }

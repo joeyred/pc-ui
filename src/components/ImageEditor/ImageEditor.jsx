@@ -1,79 +1,121 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
+import React, { Component } from "react";
+import PropTypes from "prop-types"; // eslint-disable-line
+import _ from "lodash";
+import ReactCrop from "react-image-crop";
 
-import {aspectRatioFill} from '../../utils/crop';
+import { calcCropFullCentered } from "../../utils/crop";
+// import { storeImageDimensions } from '../../redux/actions/editor';
 
-import ReactCrop from 'react-image-crop';
-import Cropper from 'react-cropper';
+// import Cropper from 'react-cropper';
 
 // import 'cropperjs/dist/cropper.css';
-import styles from './ImageEditor.module.scss';
+import styles from "./ImageEditor.module.scss";
 
 class ImageEditor extends Component {
   static defaultProps = {};
+
   static propTypes = {};
+
   constructor(props) {
     super(props);
     this.artboardRef = React.createRef();
+    // this.state = {
+    //   artboardRef: this.artboardRef.current
+    // }
+
   }
-  componentDidMount() {
+
+  // Use onImageLoaded hook instead
+  // componentDidMount() {
+  //   const {
+  //     aspectRatioArray,
+  //     storeImageDimensions,
+  //     updateCrop,
+  //   } = this.props;
+  //   // const {
+  //   //   artboardRef
+  //   // } = this.state;
+  //   const ref = this.artboardRef.current;
+  //   const image = ref.querySelector('img');
+  //   console.log(ref);
+  //   console.log(image);
+  //   const propsToStore = {
+  //     height: image.offsetHeight,
+  //     width: image.offsetWidth,
+  //     naturalHeight: image.naturalHeight,
+  //     naturalWidth: image.naturalWidth,
+  //   };
+  //   console.log(propsToStore);
+  //   const crop = calcCropFullCentered(
+  //     aspectRatioArray[0],
+  //     aspectRatioArray[1],
+  //     image.offsetWidth,
+  //     image.offsetHeight
+  //   );
+  //   console.log(crop);
+  //   storeImageDimensions(propsToStore);
+  //   updateCrop({
+  //     ...crop,
+  //     aspect: aspectRatioArray[0] / aspectRatioArray[1],
+  //   });
+  //   console.log('compoent did mount');
+  // }
+
+  onImageLoaded = (image) => {
     const {
-      crop,
-      updateCrop,
+      aspectRatioArray,
       storeImageDimensions,
-      aspectRatioArray
+      updateCrop,
     } = this.props;
-    const ref = this.artboardRef.current;
-    console.log(ref.width, ref.height);
-    const dimensions = aspectRatioFill(
+    const propsToStore = {
+      ref: image,
+      height: image.offsetHeight,
+      width: image.offsetWidth,
+      naturalHeight: image.naturalHeight,
+      naturalWidth: image.naturalWidth,
+    };
+    console.log(propsToStore);
+    const crop = calcCropFullCentered(
       aspectRatioArray[0],
       aspectRatioArray[1],
-      ref.offsetWidth,
-      ref.offsetHeight
+      image.offsetWidth,
+      image.offsetHeight
     );
-    const cropBox = _.extend(crop, {height: dimensions.height, width: dimensions.width});
-    storeImageDimensions([ref.offsetWidth, ref.offsetHeight]);
-    updateCrop(cropBox);
+    console.log(crop);
+    storeImageDimensions(propsToStore);
+    updateCrop({
+      ...crop,
+      aspect: aspectRatioArray[0] / aspectRatioArray[1],
+    });
+    // this.forceUpdate();
   }
-  // componentDidUpdate
-  initCropper(props) {
-    const {
-      file,
-      crop,
-      updateCrop
-    } = props;
-    console.log('crop init fired');
-    return (
-      <ReactCrop
-        src={file}
-        crop={crop}
-        keepSelection={true}
-        onChange={updateCrop}
-      />
-    )
-  }
+
   render() {
     const {
-      file,
+      imageSrc,
       crop,
-      updateCrop
+      updateCrop,
+      // aspectRatioArray,
     } = this.props;
+
+    // const tempCrop = calcCropFullCentered(
+    //   aspectRatioArray[0],
+    //   aspectRatioArray[1],
+    //   ref.offsetWidth,
+    //   ref.offsetHeight
+    // );
+
     return (
       <div className={styles.container}>
         <div className={styles.deadspace}>
           <div className={styles.artboard} ref={this.artboardRef}>
-            {/* <Cropper
-              src={file}
-              aspectRatio={crop.aspectRatio}
-              viewMode={3}
-            /> */}
-            {/* {this.initCropper(this.props)} */}
             <ReactCrop
-              src={file}
+              src={imageSrc}
+              // crop={crop.width ? crop : tempCrop}
               crop={crop}
-              keepSelection={true}
+              keepSelection
               onChange={updateCrop}
+              onImageLoaded={this.onImageLoaded}
             />
           </div>
         </div>
@@ -84,8 +126,6 @@ class ImageEditor extends Component {
 
 ImageEditor.defaultProps = {};
 
-ImageEditor.propTypes = {
-
-};
+ImageEditor.propTypes = {};
 
 export default ImageEditor;
