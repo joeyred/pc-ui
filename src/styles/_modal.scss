@@ -5,7 +5,6 @@ $close: '#{$full-class}__close';
 $button: '#{$full-class}__button';
 $animation: '#{$full-class}__animate';
 
-
 .#{$overlay} {
   position: fixed;
   z-index: 99999999999999;
@@ -17,14 +16,13 @@ $animation: '#{$full-class}__animate';
   justify-content: center;
   align-items: center;
   @include breakpoint('lg') {
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
   }
 }
 
-
 .#{$container} {
   width: 100vw;
-  height: 100vh;
+  height: auto;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -54,7 +52,7 @@ $animation: '#{$full-class}__animate';
   padding: 1rem;
 
   &::before {
-    content: "\2715";
+    content: '\2715';
     display: block;
     height: 16px;
     width: 16px;
@@ -70,7 +68,7 @@ $animation: '#{$full-class}__animate';
     display: block;
   }
 
-  &[aria-hidden="false"] {
+  &[aria-hidden='false'] {
     .#{$overlay} {
       animation: $fade-in 300ms cubic-bezier(0, 0, 0.2, 1);
     }
@@ -79,7 +77,7 @@ $animation: '#{$full-class}__animate';
     }
   }
 
-  &[aria-hidden="true"] {
+  &[aria-hidden='true'] {
     .#{$overlay} {
       animation: $fade-out 300ms cubic-bezier(0, 0, 0.2, 1);
     }

@@ -6,8 +6,10 @@ import EditorReducer from './reducers/editor';
 import ImageReducer from './reducers/image';
 import FrameReducer from './reducers/frame';
 import FilestackReducer from './reducers/filestack';
+import CartReducer from './reducers/cart';
 import { ExternalsReducer } from './externalsToState';
-import { StorefrontReducer } from './storefront';
+// import { StorefrontReducer } from './storefront';
+import { SizeReducer } from './size';
 
 // function filestack(state = { apiKey: 'AkrGfLiFXRI6s2gfwYnvBz' }, action) {
 //   switch (action.type) {
@@ -30,7 +32,9 @@ const rootReducer = combineReducers({
   frame: FrameReducer,
   filestack: FilestackReducer,
   external: ExternalsReducer,
-  storefront: StorefrontReducer
+  // storefront: StorefrontReducer,
+  cart: CartReducer,
+  size: SizeReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

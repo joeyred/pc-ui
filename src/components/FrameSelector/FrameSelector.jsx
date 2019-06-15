@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { map } from 'lodash';
+import _ from 'lodash';
 // 3rd Party Components
 import {
   Grid,
@@ -11,7 +11,7 @@ import {
   Cell
 } from 'react-foundation';
 
-import { updateSelectedFrame , fetchFrames } from '../../redux/actions/frame';
+import { updateSelectedFrame } from '../../redux/actions/frame';
 import { updateCropFullCenter } from '../../redux/actions/editor';
 
 // Project Components
@@ -35,58 +35,87 @@ const FrameSelector = props => {
     imageProps,
     dispatch
   } = props;
-  const filteredFramesIdArray = map(frames.allIds, id => {
-    const frame = frames.byId[id];
-    if (frame.productCollectionId === selectedCollectionId) {
-      return id;
-    }
-    return null;
-  });
-  // TODO this needs fixing!!
-  const cellsPerRow =
-    filteredFramesIdArray.length < 6 ? filteredFramesIdArray.length : 5;
-  let tempFrame = selectedFrameId;
+  // console.log(frames);
+  // console.log(selectedCollectionId);
 
   const handleClick = id => {
-    const aspect = frames.byId[id].exact;
+    const aspect = frames.byId[id].dimensions;
     dispatch(updateSelectedFrame(id));
     dispatch(updateCropFullCenter(aspect, imageProps));
   };
 
-  const items = map(filteredFramesIdArray, id => {
-    if (tempFrame === null) {
-      tempFrame = id;
-      // console.log(tempFrame, id);
-      dispatch(updateSelectedFrame(id));
-    }
-    const frame = frames.byId[id];
-    const active = id === tempFrame;
-    // console.log(tempFrame, id);
-    // const display = frame.productCollectionId === selectedCollectionId;
+  // This fixes loading issues on first render
+  let tempFrame = selectedFrameId;
 
-    // if (display) {
-    return (
-      <Cell key={id}>
-        <button
-          type='button'
-          className={`${active ? styles.active : null} ${styles.button}`}
-          onClick={() => handleClick(id)}
-        >
-          <PictureFrame dimensions={frame.display} />
-          {/* TODO Add Price Here */}
-        </button>
-      </Cell>
-    );
+  // Get the IDs for the frames to display
+  const filteredFrames = _.compact(
+    _.map(frames.allIds, id => {
+      let isInCollection = false;
+      const frame = frames.byId[id];
+      _.map(frame.collections, collection => {
+        // console.log(collection.handle);
+        if (collection.handle === selectedCollectionId) {
+          isInCollection = true;
+        }
+        // console.log(isInCollection);
+      });
+      // console.log(isInCollection);
+
+      if (isInCollection) {
+        return frame;
+      }
+      return null;
+    })
+  );
+  // TODO This needs to be able to handle mobile better
+  const cellsPerRow = filteredFrames.length < 6 ? filteredFrames.length : 5;
+  const sortedFrames = _.sortBy(filteredFrames, [
+    // 'width',
+    // 'height'
+    object => {
+      // const ar =
+      //   object.width < object.height
+      //     ? object.height / object.width
+      //     : object.width / object.height;
+      // console.log(ar);
+      return object.width < object.height
+        ? object.height / object.width
+        : object.width / object.height;
+    },
+    'height'
+    // object => {
+    //   return object.dimensions[0];
     // }
-    // return null;
-  });
+  ]);
+  // console.log(sortedFrames);
   return (
     <div className={styles.container}>
       <Grid
         vertical={direction === 'vertical'}
         className={`small-up-${cellsPerRow}`}
       >
-        {items}
+        {_.map(sortedFrames, frame => {
+          if (tempFrame === null) {
+            tempFrame = frame.id;
+            console.log(frame.id);
+            dispatch(updateSelectedFrame(frame.id));
+          }
+          const active = frame.id === tempFrame;
+          return (
+            <Cell key={frame.id}>
+              <button
+                type='button'
+                className={`${active ? styles.active : null} ${styles.button}`}
+                onClick={() => handleClick(frame.id)}
+              >
+                <PictureFrame
+                  dimensions={{ width: frame.width, height: frame.height }}
+                />
+                {/* TODO Add Price Here */}
+              </button>
+            </Cell>
+          );
+        })}
       </Grid>
     </div>
   );

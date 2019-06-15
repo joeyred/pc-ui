@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { filter } from 'lodash';
+import sizeMe from 'react-sizeme';
 import {
   // Grid,
   // Cell,
@@ -20,14 +21,21 @@ import Filestack from '../components/Filestack';
 import * as ImageActionCreators from '../redux/actions/image';
 import * as NavActionCreators from '../redux/actions/nav';
 
+const SizeAwareTopBar = sizeMe({ monitorHeight: true })(TopBar);
+
 const mapStateToProps = state => ({
   apiKey: state.filestack.key,
-  images: state.image.images
+  images: state.image.images,
+  appSize: state.size.app
 });
 
 class Upload extends Component {
   static propTypes = {
     apiKey: PropTypes.string.isRequired
+  };
+
+  state = {
+    containerHeight: 100
   };
 
   onSuccess = res => {
@@ -40,8 +48,18 @@ class Upload extends Component {
     updateView(Views.GALLERY);
   };
 
+  setUploadContainerHeight = size => {
+    const { appSize } = this.props;
+    console.log(size.height, appSize.height);
+
+    const containerHeight = appSize.height - size.height;
+
+    this.setState({ containerHeight });
+  };
+
   render() {
     const { apiKey, images, dispatch } = this.props;
+    const { containerHeight } = this.state;
     // console.log(apiKey);
     const imageHasBeenUploaded = images.allIds.length > 0;
     const addImage = bindActionCreators(ImageActionCreators.addImage, dispatch);
@@ -49,6 +67,22 @@ class Upload extends Component {
       NavActionCreators.updateView,
       dispatch
     );
+    const options = {
+      displayMode: 'inline',
+      container: 'uploadContainer',
+      fromSources: [
+        'local_file_system',
+        'instagram',
+        'facebook',
+        'googledrive'
+      ],
+      accept: 'image/*',
+      maxFiles: 20,
+      disableTransformer: true,
+      uploadInBackground: false
+      // viewType: 'grid',
+      // modalSize: [300, 500]
+    };
 
     const backToGallery = imageHasBeenUploaded ? (
       <div>
@@ -63,40 +97,29 @@ class Upload extends Component {
       </div>
     ) : null;
 
-    const options = {
-      displayMode: 'inline',
-      container: 'uploadContainer',
-      fromSources: [
-        'local_file_system',
-        'instagram',
-        'facebook',
-        'googledrive'
-      ],
-      accept: 'image/*',
-      maxFiles: 20,
-      disableTransformer: true,
-      uploadInBackground: false
-    };
-
     return (
-      <div style={{ height: '100%', width: '100%' }}>
+      <React.Fragment>
         {/* Top Bar */}
-        <TopBar style={{ zIndex: '99999999999999' }}>
+        <SizeAwareTopBar
+          style={{ zIndex: '99999999999999' }}
+          onSize={this.setUploadContainerHeight}
+        >
           <TopBarLeft>
             <div className='text-center'>
               <span className='menu-text'>Select Images to Upload</span>
             </div>
             {backToGallery}
           </TopBarLeft>
-        </TopBar>
+        </SizeAwareTopBar>
 
         <Filestack.Upload
           apiKey={apiKey}
           options={options}
           onFileUploadSuccess={addImage}
           onSuccess={this.onSuccess}
+          height={containerHeight}
         />
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -9,16 +9,35 @@
 
 .overrides {
   // Main Container Injected by Filstack
-  :global(.fsp-picker) {
-    background: $white;
-    color: $body-font-color;
-
+  :global(.fsp-picker--inline) {
+    :global(.fsp-picker) {
+      z-index: 10;
+      position: relative;
+      background: $white;
+      color: $body-font-color;
+    }
+    :global(.fsp-modal) {
+      position: relative;
+      z-index: 0;
+    }
   }
+
+  :global(.fsp-content) {
+    width: 100%;
+  }
+
   // Headers
   :global(.fsp-text__title) {
     font-family: $header-font-family;
     line-height: $header-lineheight;
     color: #ed4040;
+  }
+  // For Other Sources (Cloud & Social Media)
+  :global(.fsp-source-auth__wrapper) {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
   }
   // Sub-Header
   :global(.fsp-text__subheader) {
@@ -31,11 +50,10 @@
     margin-bottom: 1rem;
     // background-color: $primary-color;
     // border-radius: 0;
-
   }
 
   :global(.fsp-modal__sidebar) {
-    background: $light-gray;
+    background: $white;
     display: block;
     width: 60px;
     // No need to create room for a mobile hamburger menu icon
@@ -47,9 +65,15 @@
   }
 
   :global(.fsp-modal__body) {
-    width: calc(100% - 60px);
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin-left: 60px;
+    width: calc(100% - 40px);
+    height: 100%;
     // This takes care of the body content moving under the sidebar
-    left: 60px;
+    // left: 60px;
   }
   :global(.fsp-header) {
     display: none;

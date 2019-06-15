@@ -1,16 +1,16 @@
-let appApiUrl;
+let appApiUrl = 'https://276c099a.ngrok.io';
+let cartUrl = `${appApiUrl}/api/test/cart`;
 if (process.env.NODE_ENV === 'production') {
   // TODO Update this with the URL of the heroku app
   appApiUrl = 'updateme.com';
-} else {
-  appApiUrl = 'https://7e232d66.ngrok.io';
-  // appApiUrl = 'localhost:3000';
+  cartUrl = '/cart/add.js';
 }
 
 export const AppAtts = {
   ID: 'cropshop_app',
   MODAL_ID: 'cropshop_app_modal',
-  APP_API_URL: appApiUrl
+  APP_API_URL: appApiUrl,
+  CART_URL: cartUrl
 };
 
 export const ExternalDataAtts = {
@@ -23,7 +23,16 @@ export const Views = {
   UPLOAD: 'upload',
   EDIT: 'edit',
   GALLERY: 'gallery',
-  PREVIEW: 'preview'
+  PREVIEW: 'preview',
+  ADDING_TO_CART: 'adding-to-cart'
+};
+
+export const Breakpoints = {
+  sm: 0,
+  md: 640,
+  lg: 1024,
+  xl: 1200,
+  xxl: 1440
 };
 
 export const Frames = {

@@ -3,7 +3,9 @@ import {
   ADD_IMAGE,
   REMOVE_IMAGE,
   SAVE_EDIT,
-  REMOVE_EDIT
+  REMOVE_EDIT,
+  UPDATE_PREVIEW,
+  UPDATE_QUANTITY
 } from '../actiontypes/image';
 
 /**
@@ -38,11 +40,18 @@ export const removeImage = id => {
   };
 };
 
-export const saveEdit = (imageId, productId, previewSrc, transformations) => {
+export const saveEdit = (
+  imageId,
+  frameId,
+  collectionId,
+  previewSrc,
+  transformations
+) => {
   return {
     type: SAVE_EDIT,
     imageId,
-    productId,
+    frameId,
+    collectionId,
     previewSrc,
     transformations
   };
@@ -51,4 +60,16 @@ export const saveEdit = (imageId, productId, previewSrc, transformations) => {
 export const removeEdit = imageId => ({
   type: REMOVE_EDIT,
   imageId
+});
+
+export const updatePreview = ({ imageId, url }) => ({
+  type: UPDATE_PREVIEW,
+  url,
+  imageId
+});
+
+export const updateQuantity = (imageId, quantity) => ({
+  type: UPDATE_QUANTITY,
+  imageId,
+  quantity
 });

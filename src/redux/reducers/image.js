@@ -3,7 +3,9 @@ import {
   ADD_IMAGE,
   REMOVE_IMAGE,
   SAVE_EDIT,
-  REMOVE_EDIT
+  REMOVE_EDIT,
+  UPDATE_PREVIEW,
+  UPDATE_QUANTITY
 } from '../actiontypes/image';
 
 import mockImg from '../../imgs/mock-img-vertical.jpg';
@@ -20,11 +22,26 @@ const initialState = {
         handle: 'hfhdjisidhjjdk',
         url: mockImg,
         mimetype: 'image/jpg',
+        frameId: null,
         currentSavedEditId: null,
-        edit: null
+        edit: null,
+        previewUrl: null,
+        quantity: 1
+      },
+      jwuoqaln: {
+        id: 'jwuoqaln',
+        edited: false,
+        filename: 'IMG_0116.jpg',
+        handle: 'EF44w5g1TSWfaVz1iFZi',
+        url: 'https://cdn.filestackcontent.com/EF44w5g1TSWfaVz1iFZi',
+        mimetype: 'image/jpeg',
+        frameId: null,
+        currentSavedEditId: null,
+        edit: null,
+        quantity: 1
       }
     },
-    allIds: ['hfhjdkkslsoios']
+    allIds: ['hfhjdkkslsoios', 'jwuoqaln']
   }
 };
 
@@ -48,8 +65,10 @@ export default function Image(state = initialState, action) {
               handle,
               url,
               mimetype,
+              frameId: null,
               currentSavedEditId: null,
-              edits: []
+              edit: null,
+              quantity: 1
             }
           },
           allIds: [...state.images.allIds, id]
@@ -72,7 +91,13 @@ export default function Image(state = initialState, action) {
       };
     }
     case SAVE_EDIT: {
-      const { imageId, productId, previewSrc, transformations } = action;
+      const {
+        imageId,
+        frameId,
+        collectionId,
+        previewSrc,
+        transformations
+      } = action;
       return {
         ...state,
         images: {
@@ -80,16 +105,22 @@ export default function Image(state = initialState, action) {
             ...state.images.byId,
             [imageId]: {
               ...state.images.byId[imageId],
-              isEdited: true,
-              // This is the product id from shopify
-              productId,
+              edited: {
+                ...state.images.byId[imageId].edited,
+                [collectionId]: true
+              },
               edit: {
-                previewSrc,
-                // This is what will be applied with filestack
-                transformations
+                ...state.images.byId[imageId].edit,
+                [collectionId]: {
+                  previewSrc,
+                  frameId,
+                  // This is what will be applied with filestack
+                  transformations
+                }
               }
             }
-          }
+          },
+          allIds: [...state.images.allIds]
         }
       };
     }
@@ -98,11 +129,49 @@ export default function Image(state = initialState, action) {
       return {
         ...state,
         images: {
-          ...state.images.byId,
-          [imageId]: {
-            ...state.images.byId[imageId],
-            isEdited: false
-          }
+          ...state.images,
+          byId: {
+            ...state.images.byId,
+            [imageId]: {
+              ...state.images.byId[imageId],
+              isEdited: false
+            }
+          },
+          allIds: [...state.images.allIds]
+        }
+      };
+    }
+    case UPDATE_PREVIEW: {
+      const { url, imageId } = action;
+      return {
+        ...state,
+        images: {
+          ...state.images,
+          byId: {
+            ...state.images.byId,
+            [imageId]: {
+              ...state.images.byId[imageId],
+              previewUrl: url
+            }
+          },
+          allIds: [...state.images.allIds]
+        }
+      };
+    }
+    case UPDATE_QUANTITY: {
+      const { imageId, quantity } = action;
+      return {
+        ...state,
+        images: {
+          ...state.images,
+          byId: {
+            ...state.images.byId,
+            [imageId]: {
+              ...state.images.byId[imageId],
+              quantity
+            }
+          },
+          allIds: [...state.images.allIds]
         }
       };
     }

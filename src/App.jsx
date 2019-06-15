@@ -2,10 +2,17 @@ import React, { Component } from 'react';
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Client from 'shopify-buy/index.unoptimized.umd';
+import Div100vh from 'react-div-100vh';
+import sizeMe from 'react-sizeme';
+import View from './components/View';
+// import Client from 'shopify-buy/index.unoptimized.umd';
 // import * as NavActionCreators from './redux/actions/nav';
 import { updateAppVisibility } from './redux/actions/nav';
 import { updateSelectedCollection, fetchFrames } from './redux/actions/frame';
+import { storeAppSize, setBreakpoint } from './redux/size';
+import { activeBreakpoint } from './utils/breakpoints';
+import imageHasBeenEdited from './utils/imageHasBeenEdited';
+
 // Moved to index.js
 // import { fetchApiKey } from './redux/actions/filestack';
 // import { externalsToState } from './redux/externalsToState';
@@ -18,12 +25,12 @@ import { updateSelectedCollection, fetchFrames } from './redux/actions/frame';
 //   MenuItem,
 // } from 'react-foundation';
 
-import Edit from './views/Edit';
-import Gallery from './views/Gallery';
-import Upload from './views/Upload';
-import Preview from './views/Preview';
+// import Edit from './views/Edit';
+// import Gallery from './views/Gallery';
+// import Upload from './views/Upload';
+// import Preview from './views/Preview';
 
-import { ExternalDataAtts, Views, AppAtts } from './globals';
+import { ExternalDataAtts, Breakpoints, AppAtts } from './globals';
 
 import './styles/foundation/global_include.scss';
 import styles from './App.module.scss';
@@ -31,11 +38,12 @@ import styles from './App.module.scss';
 const mapStateToProps = state => ({
   currentView: state.nav.currentView,
   images: state.image.images,
-  selectedCollection: state.frame.selectedCollectionId,
-  storefrontTokenLoaded: state.storefront.loaded,
-  storefrontToken: state.storefront.token,
-  storefrontDomain: state.storefront.domain,
-  client: state.storefront.client
+  selectedCollectionId: state.frame.selectedCollectionId,
+  currentBreakpoint: state.size.breakpoint
+  // storefrontTokenLoaded: state.storefront.loaded,
+  // storefrontToken: state.storefront.token,
+  // storefrontDomain: state.storefront.domain,
+  // client: state.storefront.client,
 });
 
 const bindActionsToExternalEvents = (query, callback) => {
@@ -48,15 +56,18 @@ const bindActionsToExternalEvents = (query, callback) => {
 
 class App extends Component {
   componentDidMount() {
-    const { images, dispatch } = this.props;
+    // set up listener for window resize
+    // get window height and width
+    // use redux action to save to state
+    // use that to determine breakpoints?
+    const { images, selectedCollectionId, dispatch } = this.props;
     // NOTE This is gotten from a globally define variable.
     //      Yes I know this sucks...
     //      It's Shopify...
     // eslint-disable-next-line no-undef
     // const storeDomain = CropshopData.shop.domain;
-    const imageHasBeenEdited =
-      _.filter(images.byId, { edited: true }).length > 0;
-
+    // TODO Move all of this over to CropShopButton and index (if needed for the latter)
+    const isAnImageEdited = imageHasBeenEdited(images, selectedCollectionId);
     bindActionsToExternalEvents(`[${ExternalDataAtts.MODAL_OPEN}]`, () => {
       // TODO uncomment this for deployment/final testing
       // const collection = document
@@ -64,87 +75,41 @@ class App extends Component {
       //   .getAttribute(ExternalDataAtts.COLLECTION);
       // dispatch(updateSelectedCollection(collection));
       // TODO uncomment this for deployment/final testing
-      // dispatch(updateAppVisibility(true, imageHasBeenEdited));
+      // dispatch(updateAppVisibility(true, isAnImageEdited ));
     });
 
     bindActionsToExternalEvents(`[${ExternalDataAtts.MODAL_CLOSE}]`, () => {
       // TODO uncomment this for deployment/final testing
-      // dispatch(updateAppVisibility(false, imageHasBeenEdited));
+      // dispatch(updateAppVisibility(false, isAnImageEdited ));
     });
   }
 
-  view() {
-    const { currentView, client } = this.props;
-
-    if (currentView === Views.UPLOAD) {
-      return <Upload />;
+  onSize = size => {
+    const { currentBreakpoint, dispatch } = this.props;
+    const breakpoint = activeBreakpoint(Breakpoints);
+    if (breakpoint !== currentBreakpoint) {
+      dispatch(setBreakpoint(breakpoint));
     }
-    if (currentView === Views.GALLERY) {
-      return <Gallery />;
-    }
-    if (currentView === Views.EDIT) {
-      return <Edit />;
-    }
-    if (currentView === Views.PREVIEW) {
-      return <Preview />;
-    }
-    return null;
-  }
+    console.log(size);
+    dispatch(storeAppSize(size));
+  };
 
   render() {
-    const {
-      storefrontTokenLoaded,
-      storefrontToken,
-      storefrontDomain
-    } = this.props;
-    if (storefrontTokenLoaded) {
-      const client = Client.buildClient({
-        storefrontAccessToken: 'd528ce7d37897fcd81e84bef3f81c547',
-        domain: storefrontDomain
-      });
-      console.log(client);
-      if (client) {
-        const productsQuery = client.graphQLClient.query(root => {
-          root.addConnection(
-            'products',
-            { args: { query: 'tag:custom', first: 50 } },
-            product => {
-              product.addConnection(
-                'collections',
-                { args: { first: 10 } },
-                collection => {
-                  collection.add('id');
-                  collection.add('handle');
-                  collection.add('title');
-                }
-              );
-              product.addConnection(
-                'metafields',
-                { args: { namespace: 'cropshop', first: 10 } },
-                metafield => {
-                  metafield.add('id');
-                  metafield.add('key');
-                  metafield.add('value');
-                }
-              );
-              product.add('id');
+    const { currentView, currentBreakpoint } = this.props;
+    const style = {};
+    if (currentBreakpoint === 'sm' || currentBreakpoint === 'md') {
+      const rvh =
+        window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight;
 
-              // product.add('metafield')
-            }
-          );
-        });
-        client.graphQLClient.send(productsQuery).then(response => {
-          console.log(response);
-        });
-        client.product.fetchQuery({ tag: 'custom' }).then(response => {
-          console.log(response);
-        });
-        // client.product.fetchAll().then(response => {
-        //   console.log(response);
-        // });
-      }
+      style.height = `${rvh}px`;
     }
-    return <div className={styles.App}>{this.view()}</div>;
+    return (
+      <div className={styles.App} style={style}>
+        <View currentView={currentView} onSize={this.onSize} />
+      </div>
+    );
   }
 }
 

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 // Redux
 import { Provider } from 'react-redux';
 import uniqid from 'uniqid';
+import _ from 'lodash';
 
 import store from './redux/store';
 
@@ -11,7 +12,8 @@ import store from './redux/store';
 import CropShopButton from './utils/CropShopButton';
 import { fetchApiKey } from './redux/actions/filestack';
 import { externalsToState } from './redux/externalsToState';
-import { fetchStorefrontToken, setStorefrontDomain } from './redux/storefront';
+import { addFrame } from './redux/actions/frame';
+// import { fetchStorefrontToken, setStorefrontDomain } from './redux/storefront';
 // import { updateAppVisibility } from './redux/actions/nav';
 import { AppAtts } from './globals';
 
@@ -45,16 +47,21 @@ const initExternalStuff = () => {
 //      It's Shopify...
 // eslint-disable-next-line no-undef
 const siteData = CropshopData;
-store.dispatch(setStorefrontDomain(storeDomain));
+// store.dispatch(setStorefrontDomain(storeDomain));
 store.dispatch(
   externalsToState({
     shop: siteData.shop.domain,
-    products: siteData.products
+    products: siteData.products,
+    cartUrl: siteData.cartUrl
   })
 );
-
+console.log(siteData.cartUrl);
 store.dispatch(fetchApiKey(siteData.shop.domain));
 // store.dispatch(fetchStorefrontToken(storeDomain));
+
+_.map(siteData.products, product => {
+  store.dispatch(addFrame(product));
+});
 
 ReactDOM.render(
   // eslint-disable-next-line react/jsx-filename-extension

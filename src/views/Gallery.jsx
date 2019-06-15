@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types"; // eslint-disable-line
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import _ from "lodash";
+import React from 'react';
+import PropTypes from 'prop-types'; // eslint-disable-line
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
 import {
   TopBar,
@@ -14,34 +14,35 @@ import {
   GridContainer,
   Cell,
   Colors
-} from "react-foundation";
+} from 'react-foundation';
 
-import Icon from "../components/Icon";
+import Icon from '../components/Icon';
 import CloseModal from '../components/CloseModal';
 import { Views } from '../globals';
 
-// import * as ImageActionCreators from '../redux/actions/image';
-import * as GalleryActionCreators from "../redux/actions/gallery";
-import * as NavActionCreators from "../redux/actions/nav";
+import * as ImageActionCreators from '../redux/actions/image';
+import * as GalleryActionCreators from '../redux/actions/gallery';
+import * as NavActionCreators from '../redux/actions/nav';
+import { doneEditing, addItemToCart } from '../redux/actions/cart';
 
-import ImageList from "../components/ImageList";
+import imageHasBeenEdited from '../utils/imageHasBeenEdited';
 
-import styles from "./Gallery.module.scss";
+import ImageList from '../components/ImageList';
+
+import styles from './Gallery.module.scss';
 
 const mapStateToProps = state => ({
   images: state.image.images,
+  frames: state.frame.frames,
+  selectedCollectionId: state.frame.selectedCollectionId,
   isEditing: state.gallery.isEditing,
   imageHasBeenEdited: state.gallery.imageHasBeenEdited
 });
 
 const Gallery = props => {
-  const {
-    images,
-    isEditing,
-    dispatch
-  } = props;
+  const { images, frames, selectedCollectionId, isEditing, dispatch } = props;
+  console.log(images);
   // Check if an image has been edited
-  const imageHasBeenEdited = _.filter(images.byId, { edited: true }).length > 0;
   const imageHasBeenUploaded = images.allIds.length > 0;
 
   const updateEditMode = bindActionCreators(
@@ -52,17 +53,45 @@ const Gallery = props => {
     GalleryActionCreators.setImageInEditor,
     dispatch
   );
-
-  const updateView = bindActionCreators(
-    NavActionCreators.updateView,
+  const updateQuantity = bindActionCreators(
+    ImageActionCreators.updateQuantity,
     dispatch
   );
 
+  const updateView = bindActionCreators(NavActionCreators.updateView, dispatch);
+
   const imageToEditor = id => {
-    if(_.indexOf(images.allIds, id) !== -1) {
+    if (_.indexOf(images.allIds, id) !== -1) {
       setImageInEditor(id);
       updateView(Views.EDIT);
     }
+  };
+
+  const doneEditingClick = () => {
+    doneEditing();
+    updateEditMode(false);
+  };
+
+  const addToCart = () => {
+    const items = _.map(images.allIds, id => {
+      const image = images.byId[id];
+      if (image.edited && image.quantity > 0) {
+        return {
+          quantity: image.quantity,
+          id: frames.byId[image.edit[selectedCollectionId].frameId].variantId,
+          properties: {
+            _filestack_handle: image.handle,
+            _edit: JSON.stringify(
+              image.edit[selectedCollectionId].transformations
+            ),
+            _filestack_src: image.edit[selectedCollectionId].previewSrc
+          }
+        };
+      }
+      return null;
+    });
+    dispatch(addItemToCart(_.compact(items)));
+    dispatch(updateView(Views.ADDING_TO_CART));
   };
 
   const responsiveItemsPerRow = {
@@ -72,10 +101,10 @@ const Gallery = props => {
     xlarge: 5,
     xxlarge: 6
   };
+
   const AddToCart = (
     <Cell className='auto'>
-      <Button color={Colors.PRIMARY} size='small'>
-        {/* TODO Add onClick */}
+      <Button color={Colors.PRIMARY} size='small' onClick={() => addToCart()}>
         <Icon name='AddShoppingCart' /> Add to Cart
       </Button>
     </Cell>
@@ -86,14 +115,14 @@ const Gallery = props => {
       <Button
         color={Colors.PRIMARY}
         size='small'
-        onClick={() => updateEditMode(false)}
-        isDisabled={!imageHasBeenEdited}
+        onClick={() => doneEditingClick()}
+        isDisabled={!imageHasBeenEdited(images, selectedCollectionId)}
       >
         Done Editing <Icon name='ArrowForward' />
       </Button>
     </Cell>
   );
-
+  console.log(imageHasBeenEdited(images, selectedCollectionId));
   const BackToEditing = (
     <Cell className='auto'>
       <Button
@@ -105,12 +134,13 @@ const Gallery = props => {
       </Button>
     </Cell>
   );
+
   const NoImagesCallout = imageHasBeenUploaded ? null : (
     <Callout color={Colors.ALERT}>
       <h5>No Images Have Been Uploaded!</h5>
       <p>
-        It looks like you got to the gallery, but no images have been uploaded yet.
-        Click the button below to get back to the image uploader!
+        It looks like you got to the gallery, but no images have been uploaded
+        yet. Click the button below to get back to the image uploader!
       </p>
       <Button
         color={Colors.PRIMARY}
@@ -121,6 +151,10 @@ const Gallery = props => {
       </Button>
     </Callout>
   );
+
+  const headingText = isEditing
+    ? 'Select an Image to Edit'
+    : 'Update Product Quanties';
 
   return (
     <div>
@@ -141,7 +175,7 @@ const Gallery = props => {
         </TopBarRight>
       </TopBar>
       {/* Main Gallery */}
-      <GridContainer className={styles["content-container"]}>
+      <GridContainer className={styles['content-container']}>
         <Grid vertical className='grid-margin-y'>
           <Cell small={12}>
             <Grid vertical={false} className='align-center-middle text-center'>
@@ -151,14 +185,17 @@ const Gallery = props => {
             </Grid>
           </Cell>
           <Cell small={12}>
-            <h2>Select an Image to Edit</h2>
+            <h2>{headingText}</h2>
           </Cell>
           <Cell>
             <ImageList
               images={images}
+              frames={frames}
+              selectedCollectionId={selectedCollectionId}
               temsPerRow={responsiveItemsPerRow}
               isEditing={isEditing}
               handleClick={imageToEditor}
+              handleCountUpdate={updateQuantity}
             />
             {NoImagesCallout}
           </Cell>

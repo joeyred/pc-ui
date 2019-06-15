@@ -1,10 +1,12 @@
-import React from "react";
+import React from 'react';
 // import PropTypes from "prop-types";
 
-import MicroModal from "micromodal";
+// import MicroModal from "micromodal";
 
 import { AppAtts } from '../../globals';
-import styles from "./CloseModal.module.scss";
+import { closeModal } from '../../utils/CropShopButton';
+
+import styles from './CloseModal.module.scss';
 
 const CloseModal = () => {
   return (
@@ -12,7 +14,7 @@ const CloseModal = () => {
       type='button'
       className={styles.button}
       aria-label='Close modal'
-      onClick={() => MicroModal.close(AppAtts.MODAL_ID)}
+      onClick={() => closeModal(AppAtts.MODAL_ID)}
     />
   );
 };

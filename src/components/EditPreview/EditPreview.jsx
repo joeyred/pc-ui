@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
+import uniqid from 'uniqid';
+
+import { updatePreview } from '../../redux/actions/image';
+import store from '../../redux/store';
 
 class EditPreview extends Component {
   state = {
-    image: null
+    image: null,
+    loading: true
   };
 
   componentDidMount() {
-    const { imageSrc, imageProps, crop } = this.props;
-    this.makeClientCrop(imageSrc, imageProps, crop);
+    const { imageId, imageSrc, imageProps, crop } = this.props;
+    this.makeClientCrop(imageId, imageSrc, imageProps, crop);
   }
 
   getCroppedImg(imageSrc, imageProps, crop, fileName) {
@@ -49,18 +54,21 @@ class EditPreview extends Component {
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
+
         resolve(this.fileUrl);
       }, 'image/jpeg');
     });
   }
 
-  async makeClientCrop(imageSrc, imageProps, crop) {
+  async makeClientCrop(imageId, imageSrc, imageProps, crop) {
+    // const { dispatch } = this.props;
     const croppedImageUrl = await this.getCroppedImg(
       imageSrc,
       imageProps,
       crop,
-      'previewFile.jpeg'
+      `${imageId}_preview-${uniqid()}.jpg`
     );
+    store.dispatch(updatePreview({ imageId, url: croppedImageUrl }));
     this.setState({ image: croppedImageUrl });
   }
 

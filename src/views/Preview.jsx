@@ -1,54 +1,91 @@
-import React from "react";
-import PropTypes from "prop-types"; // eslint-disable-line
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import {
-  Grid,
-  Cell,
-  Button,
-  Colors
-} from "react-foundation";
+import React from 'react';
+import PropTypes from 'prop-types'; // eslint-disable-line
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Grid, Cell, Button, Colors } from 'react-foundation';
+import { Filelink } from 'filestack-js';
 
 import * as NavActionCreators from '../redux/actions/nav';
+import { saveEdit } from '../redux/actions/image';
 import { Views } from '../globals';
-import EditPreview from '../components/EditPreview';
+// import EditPreview from '../components/EditPreview';
+import { scaleCrop, generateTransform } from '../utils/transformations';
 
 import styles from './Preview.module.scss';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
+  apiKey: state.filestack.key,
   imageProps: state.editor.imageProps,
+  rotate: state.editor.rotate,
+  zoom: state.editor.zoom,
+  flip: state.editor.flip,
+  flop: state.editor.flop,
   crop: state.editor.crop,
   images: state.image.images,
-  currentIdBeingEdited: state.gallery.currentIdBeingEdited,
-
+  frames: state.frame.frames,
+  selectedFrameId: state.frame.selectedFrameId,
+  selectedCollectionId: state.frame.selectedCollectionId,
+  currentIdBeingEdited: state.gallery.currentIdBeingEdited
 });
 
-const Preview = (props) => {
+const save = ({
+  imageId,
+  // productId,
+  // productVariantId,
+  frameId,
+  collectionId,
+  previewUrl,
+  transformations,
+  dispatch
+}) => {
+  console.log(frameId);
+  dispatch(
+    saveEdit(imageId, frameId, collectionId, previewUrl, transformations)
+  );
+  dispatch(NavActionCreators.updateView(Views.GALLERY));
+};
+
+const Preview = props => {
   const {
+    apiKey,
     imageProps,
+    zoom,
+    rotate,
+    flip,
+    flop,
     crop,
     dispatch,
     images,
-    currentIdBeingEdited,
+    selectedFrameId,
+    selectedCollectionId,
+    currentIdBeingEdited
   } = props;
-
-  const updateView = bindActionCreators(
-    NavActionCreators.updateView,
-    dispatch
+  const linkedImage = new Filelink(
+    images.byId[currentIdBeingEdited].handle,
+    apiKey
   );
+  const updateView = bindActionCreators(NavActionCreators.updateView, dispatch);
+  // const { productId, productVariantId } = frames.byId[selectedFrameId];
+  // const { previewUrl } = images.byId[currentIdBeingEdited];
+  // const imageSrc = images.byId[currentIdBeingEdited].url;
 
-  const imageSrc = images.byId[currentIdBeingEdited].url;
+  const newCrop = scaleCrop({ imageProps, crop, zoom });
+  const edit = { flip, flop, rotate, crop: newCrop };
+  const preview = generateTransform(linkedImage, edit);
+
   return (
     <Grid vertical className={styles.container}>
       <Cell>
         <h1>Like what you see?</h1>
       </Cell>
       <Cell className={styles.preview}>
-        <EditPreview
+        {/* <EditPreview
+          imageId={currentIdBeingEdited}
           imageSrc={imageSrc}
           imageProps={imageProps}
           crop={crop}
-        />
+        /> */}
+        <img src={preview.url} alt='Preview of your Edit' />
       </Cell>
       <Cell>
         <Grid className='align-center-middle text-center'>
@@ -61,9 +98,18 @@ const Preview = (props) => {
             </Button>
           </Cell>
           <Cell className='auto'>
-            {/* TODO Redux - Add Reducer to Save button */}
             <Button
               color={Colors.PRIMARY}
+              onClick={() =>
+                save({
+                  imageId: currentIdBeingEdited,
+                  frameId: selectedFrameId,
+                  collectionId: selectedCollectionId,
+                  previewUrl: preview.url,
+                  transformations: edit,
+                  dispatch
+                })
+              }
             >
               Save
             </Button>
@@ -71,8 +117,7 @@ const Preview = (props) => {
         </Grid>
       </Cell>
     </Grid>
-
   );
-}
+};
 
 export default connect(mapStateToProps)(Preview);

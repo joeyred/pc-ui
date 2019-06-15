@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // eslint-disable-line
 
 import {
-  Button,
+  Button
   // Colors
 } from 'react-foundation';
 // import toUpper from 'lodash/toUpper';
@@ -10,31 +10,62 @@ import Icon from '../Icon';
 
 import styles from './Toolbar.module.scss';
 
-const ToolbarButton = (props) => {
+const ToolbarButton = props => {
   const {
     icon,
+    rotateIcon,
     label,
     color,
     disabled,
-    clickHandler
+    handleClick,
+    handleMouseDown,
+    handleMouseUp
   } = props;
+  const attributes = {};
+  if (disabled) {
+    attributes.onClick = e => {
+      e.preventDefault();
+    };
+    attributes.onMouseDown = e => {
+      e.preventDefault();
+    };
+    attributes.onMouseUp = e => {
+      e.preventDefault();
+    };
+  } else {
+    if (handleClick) attributes.onClick = handleClick;
+    if (handleMouseDown) attributes.onMouseDown = handleMouseDown;
+    if (handleMouseUp) attributes.onMouseUp = handleMouseUp;
+  }
 
   return (
-    <Button color={color} isDisabled={disabled} onClick={clickHandler}>
-      <Icon name={icon} inline={false} className={styles.icon} />
+    <Button color={color} isDisabled={disabled} {...attributes}>
+      <Icon
+        name={icon}
+        rotate={rotateIcon}
+        inline={false}
+        className={styles.icon}
+      />
       <span>{label}</span>
     </Button>
   );
-}
+};
 
 ToolbarButton.defaultProps = {
   color: 'primary',
-  disabled: false
-}
+  rotateIcon: 0,
+  disabled: false,
+  handleClick: false,
+  handleMouseDown: false,
+  handleMouseUp: false
+};
 
 ToolbarButton.propTypes = {
-  // clickHandler: () => console.log('button clicked'),
+  handleClick: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  handleMouseDown: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+  handleMouseUp: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   icon: PropTypes.string.isRequired,
+  rotateIcon: PropTypes.number,
   label: PropTypes.string.isRequired,
   color: PropTypes.oneOf([
     'primary',
@@ -43,7 +74,7 @@ ToolbarButton.propTypes = {
     'warning',
     'alert'
   ]),
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 export default ToolbarButton;

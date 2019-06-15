@@ -14,15 +14,17 @@ import styles from './FilestackUpload.module.scss';
 class Upload extends Component {
   static defaultProps = {
     onFileUploadSuccess: result => console.log(result),
-    onFileUploadError:   error => console.log(error),
-    onSuccess:           result => console.log(result),
-    onError:             error => console.error(error),
-    options:             {},
-    security:            null,
-    children:            null,
-    render:              null,
-    sessionCache:        false
-  }
+    onFileUploadError: error => console.log(error),
+    onSuccess: result => console.log(result),
+    onError: error => console.error(error),
+    options: {},
+    security: null,
+    children: null,
+    render: null,
+    sessionCache: false,
+    width: -1,
+    height: -1
+  };
 
   static propTypes = {
     /**
@@ -34,27 +36,23 @@ class Upload extends Component {
      * Called at onUploadDone
      * @param {Array} result - the metadata returned from the upload
      */
-    onSuccess:           PropTypes.func,
-    onError:             PropTypes.func,
+    onSuccess: PropTypes.func,
+    onError: PropTypes.func,
     onFileUploadSuccess: PropTypes.func,
-    onFileUploadError:   PropTypes.func,
-    options:             PropTypes.objectOf(PropTypes.any),
-    security:            PropTypes.objectOf(PropTypes.any),
-    children:            PropTypes.node,
-    render:              PropTypes.func,
-    sessionCache:        PropTypes.bool,
-    active:              PropTypes.bool
+    onFileUploadError: PropTypes.func,
+    options: PropTypes.objectOf(PropTypes.any),
+    security: PropTypes.objectOf(PropTypes.any),
+    children: PropTypes.node,
+    render: PropTypes.func,
+    sessionCache: PropTypes.bool,
+    active: PropTypes.bool,
+    height: PropTypes.number,
+    width: PropTypes.number
   };
 
   constructor(props) {
     super(props);
-    const {
-      apiKey,
-      security,
-      sessionCache,
-      active,
-      options
-    } = this.props;
+    const { apiKey, security, sessionCache, active, options } = this.props;
     // const overrides = {
     //   displayMode: 'inline',
     //   container: 'uploadContainer'
@@ -64,7 +62,7 @@ class Upload extends Component {
     // Create client instance
     const client = filestack.init(apiKey, {
       security,
-      sessionCache,
+      sessionCache
     });
 
     this.state = {
@@ -90,39 +88,35 @@ class Upload extends Component {
    * @return {Promise}    - The instance.
    */
   mountPicker = () => {
-    const {
-      client,
-      options
-    } = this.state;
-    const {
-      onFileUploadSuccess,
-      onFileUploadError
-    } = this.props;
-    return new Promise((resolve) => {
+    const { client, options } = this.state;
+    const { onFileUploadSuccess, onFileUploadError } = this.props;
+    return new Promise(resolve => {
       // TODO No Reuploads
       // Use `onFileSelected` option to perform necessary checks to prevent
       // uploading a previously uploaded and available file.
-      client.picker({
-        ...options,
-        // TODO Add `onFileSelected`
-        // Handle each individual successful file upload
-        onFileUploadFinished: onFileUploadSuccess,
-        // Handle each individual failed file upload
-        onFileUploadFailed: onFileUploadError,
-        // When all files are uploaded, resolve the promise
-        onUploadDone: resolve,
-      }).open();
+      client
+        .picker({
+          ...options,
+          // TODO Add `onFileSelected`
+          // Handle each individual successful file upload
+          onFileUploadFinished: onFileUploadSuccess,
+          // Handle each individual failed file upload
+          onFileUploadFailed: onFileUploadError,
+          // When all files are uploaded, resolve the promise
+          onUploadDone: resolve
+        })
+        .open();
     });
-  }
+  };
 
-  onFinished = (result) => {
+  onFinished = result => {
     const { onSuccess } = this.props;
     if (typeof onSuccess === 'function' && result) {
       onSuccess(result);
     }
   };
 
-  onFail = (error) => {
+  onFail = error => {
     const { onError } = this.props;
     if (typeof onError === 'function') {
       onError(error);
@@ -132,16 +126,13 @@ class Upload extends Component {
   };
 
   render() {
-    const {
-      options
-    } = this.state;
-
+    const { options } = this.state;
+    const { width, height } = this.props;
+    const style = {};
+    if (width) style.width = `${width}px`;
+    if (height) style.height = `${height}px`;
     return (
-      <div
-        style={{width: '100%', height: '100%'}}
-        id={options.container}
-        className={styles.overrides}
-      ></div>
+      <div style={style} id={options.container} className={styles.overrides} />
     );
   }
 }

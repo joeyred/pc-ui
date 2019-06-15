@@ -7,33 +7,31 @@ import Frame from '../graphics/Frame';
 
 import styles from './PictureFrame.module.scss';
 
-const PictureFrame = (props) => {
-  const {dimensions} = props;
+const PictureFrame = props => {
+  const { dimensions } = props;
+  const { width, height } = dimensions;
 
-  const height = dimensions[1];
-  const width = dimensions[0];
+  // const width = dimensions[0];
+  // const height = dimensions[1];
+
   return (
-
     <div className={styles.container}>
       {/* <SquareContainer centerContent={true}> */}
       <figure className={styles.frame}>
-        <Frame height={height} width={width} />
+        <Frame width={width} height={height} />
         <figcaption className={styles.text}>
-          <div>
-            {`${dimensions[0]} x ${dimensions[1]}`}
-          </div>
+          <div>{`${width} x ${height}`}</div>
         </figcaption>
       </figure>
       {/* </SquareContainer> */}
     </div>
-
   );
 };
 
 PictureFrame.defaultProps = {};
 
 PictureFrame.propTypes = {
-  dimensions: PropTypes.array
+  // dimensions: PropTypes.array
 };
 
 export default PictureFrame;

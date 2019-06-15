@@ -2,6 +2,7 @@ import MicroModal from 'micromodal';
 
 import store from '../redux/store';
 import { updateSelectedCollection } from '../redux/actions/frame';
+import { updateAppVisibility } from '../redux/actions/nav';
 
 const dev = process.env.NODE_ENV !== 'production';
 
@@ -21,8 +22,12 @@ export default class CropShopButton {
   }
 
   openModal() {
+    const { images } = store.getState().image;
+    const imageHasBeenUploaded = images.allIds.length > 0;
+    // console.log(imageHasBeenUploaded);
     this.appContainer.setAttribute('data-cropshop-collection', this.collection);
     store.dispatch(updateSelectedCollection(this.collection));
+    store.dispatch(updateAppVisibility(true, imageHasBeenUploaded));
     MicroModal.show(this.modalId, {
       disableScroll: true,
       disableFocus: true,
@@ -41,3 +46,12 @@ export default class CropShopButton {
     this.events();
   }
 }
+
+export const closeModal = modalId => {
+  const { images } = store.getState().image;
+  const imageHasBeenUploaded = images.allIds.length > 0;
+  console.log(imageHasBeenUploaded);
+
+  MicroModal.close(modalId);
+  store.dispatch(updateAppVisibility(false, imageHasBeenUploaded));
+};

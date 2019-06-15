@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'; // eslint-disable-line
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Filelink } from 'filestack-js';
 import {
   Grid,
   Cell,
@@ -12,8 +13,16 @@ import {
   Colors
 } from 'react-foundation';
 
-import * as EditorActionCreators from '../redux/actions/editor';
-import * as NavActionCreators from '../redux/actions/nav';
+import { scaleCrop, generateTransform } from '../utils/transformations';
+import {
+  toggleOption,
+  updateRotation,
+  updateZoom,
+  updateCrop as updateCropActionCreator,
+  storeImageDimensions as storeImageDimensionsActionCreator
+} from '../redux/actions/editor';
+
+import { updateView } from '../redux/actions/nav';
 // import ReactCrop from 'react-image-crop';
 import { Views } from '../globals';
 
@@ -31,14 +40,17 @@ import 'react-image-crop/lib/ReactCrop.scss';
 // import mockImg from "../imgs/mock-img-vertical.jpg";
 
 const mapStateToProps = state => ({
-  // apiKey: state.filestack.apiKey,
+  apiKey: state.filestack.key,
   frames: state.frame.frames,
   selectedFrameId: state.frame.selectedFrameId,
   images: state.image.images,
   imageId: state.gallery.currentIdBeingEdited,
-
-  // selectedCollectionId: state.edit.selectedFrame,
-  // file: state.edit.file,
+  // Editor stuff
+  imageProps: state.editor.imageProps,
+  rotate: state.editor.rotate,
+  zoom: state.editor.zoom,
+  flip: state.editor.flip,
+  flop: state.editor.flop,
   crop: state.editor.crop
 });
 
@@ -52,9 +64,85 @@ class Edit extends Component {
     // file: PropTypes.object.isRequired,
   };
 
+  handleRotate = direction => {
+    const { rotate, dispatch } = this.props;
+    if (direction === 'left') {
+      // dispatch(updateRotation(rotate - 90));
+      return rotate - 90;
+    }
+    if (direction === 'right') {
+      // dispatch(updateRotation(rotate + 90));
+      return rotate + 90;
+    }
+    return rotate + 90;
+  };
+
+  handleDimensions = () => {
+    const { rotate, imageProps } = this.props;
+
+    const container = {};
+    const image = {};
+
+    if (rotate === 90 || rotate === 270) {
+      container.width = imageProps.height ? imageProps.height : 'inherit';
+      container.height = imageProps.width ? imageProps.width : 'auto';
+      return {
+        width: container.width,
+        height: container.height
+      };
+    }
+    container.width = imageProps.width ? imageProps.width : 'auto';
+    container.height = imageProps.height ? imageProps.height : 'inherit';
+    return {
+      width: container.width,
+      height: container.height
+    };
+  };
+
+  generateTransformStyles = () => {
+    const { rotate, flip, flop, zoom } = this.props;
+    const rotateTransform = {};
+    // Normal Rotation
+    rotateTransform.x = rotate > 0 && rotate < 360 ? rotate : 0;
+    // Flip Horizontally
+    rotateTransform.y = flop ? 180 : 0;
+    // Flip Vertically
+    rotateTransform.z = flip ? 180 : 0;
+
+    const zoomTransform = zoom > 1 ? zoom : 1;
+
+    return `rotateX(${rotateTransform.x}deg) rotateY(${
+      rotateTransform.y
+    }deg) rotateZ(${rotateTransform.z}deg)`;
+
+    // return `rotateY()`
+
+    // return `rotate3d(${rotateTransform.x}, ${rotateTransform.y}, ${
+    //   rotateTransform.z
+    // })`;
+  };
+
+  // TODO Replace this with a more flexible and performant solution
+  handleImageEditViaApi = linkedImage => {
+    const { rotate, flip, flop } = this.props;
+
+    const preview = generateTransform(linkedImage, { rotate, flip, flop });
+    console.log(preview.url);
+    return preview.url;
+  };
+
+  // renderImageStyle = () => `
+  //   .${styles.container} {
+  //     img.ReactCrop__image {
+  //       transform: ${this.generateTransformStyles};
+  //     }
+  //   }
+  // `;
+
   render() {
     // console.log(this.props);
     const {
+      apiKey,
       frames,
       selectedFrameId,
       images,
@@ -62,38 +150,52 @@ class Edit extends Component {
       dispatch,
       crop
     } = this.props;
-
+    // Get the image data
     const image = images.byId[imageId];
+
+    // Construct a new instance to link to Filestack image.
+    const linkedImage = new Filelink(image.handle, apiKey);
+
+    // Handle any undefined type weirdness on first render
     let frame = frames.byId[selectedFrameId];
-    console.log(frame);
+    // console.log(frame);
     if (!frame) {
       frame = {
-        exact: [8, 8]
+        dimensions: [8, 8]
       };
     }
 
-    const updateView = bindActionCreators(
-      NavActionCreators.updateView,
-      dispatch
-    );
-    const updateCrop = bindActionCreators(
-      EditorActionCreators.updateCrop,
-      dispatch
-    );
+    // const updateView = bindActionCreators(
+    //   NavActionCreators.updateView,
+    //   dispatch
+    // );
+    const updateCrop = bindActionCreators(updateCropActionCreator, dispatch);
     const storeImageDimensions = bindActionCreators(
-      EditorActionCreators.storeImageDimensions,
+      storeImageDimensionsActionCreator,
       dispatch
     );
+    // const dimensions = this.handleDimensions();
 
     return (
       <Grid vertical className={`${styles.container}`}>
+        {/* <style>
+          {`
+
+            img.ReactCrop__image {
+              height: ${dimensions.height}px;
+              width: ${dimensions.width}px;
+              transform: ${this.generateTransformStyles()};
+            }
+
+          `}
+        </style> */}
         <TopBar>
           <TopBarLeft>
             {/* TODO Redux - Add Reducer to Back to Gallery button */}
             <Button
               color={Colors.SECONDARY}
               size='small'
-              onClick={() => updateView(Views.GALLERY)}
+              onClick={() => dispatch(updateView(Views.GALLERY))}
             >
               <Icon name='Apps' /> Back To Gallery
             </Button>
@@ -108,33 +210,61 @@ class Edit extends Component {
           <FrameSelector direction='horizontal' />
         </Cell>
         {/* Image Editor */}
-        <Cell className='auto'>
+        <Cell className='auto' style={{ height: '300px' }}>
           <ImageEditor
-            imageSrc={image.url}
+            // imageSrc={image.url}
+            imageSrc={this.handleImageEditViaApi(linkedImage)}
+            // artboardDimensions={this.handleDimensions()}
             crop={crop}
             updateCrop={updateCrop}
             storeImageDimensions={storeImageDimensions}
-            aspectRatioArray={frame.exact}
+            aspectRatioArray={frame.dimensions}
             // aspectRatioArray={[8, 8]}
           />
         </Cell>
         <Cell>
           <Toolbar>
-            <Toolbar.Group label='Zoom'>
+            {/* <Toolbar.Group label='Zoom'>
               <Toolbar.Button icon='ZoomIn' label='In' />
               <Toolbar.Button icon='ZoomOut' label='Out' />
-            </Toolbar.Group>
+            </Toolbar.Group> */}
             <Toolbar.Group label='Rotate'>
-              <Toolbar.Button icon='RotateLeft' label='Left' />
-              <Toolbar.Button icon='RotateRight' label='Right' />
+              <Toolbar.Button
+                icon='RotateLeft'
+                label='Left'
+                // handleClick={() => this.handleRotate('left')}
+                handleClick={() =>
+                  dispatch(updateRotation(this.handleRotate('left')))
+                }
+              />
+              <Toolbar.Button
+                icon='RotateRight'
+                label='Right'
+                // handleClick={() => this.handleRotate('right')}
+                handleClick={() =>
+                  dispatch(updateRotation(this.handleRotate('right')))
+                }
+              />
+            </Toolbar.Group>
+            <Toolbar.Group label='Flip'>
+              <Toolbar.Button
+                icon='Flip'
+                label='Horizontal'
+                handleClick={() => dispatch(toggleOption('flop'))}
+              />
+              <Toolbar.Button
+                icon='Flip'
+                rotateIcon={270}
+                label='Vertical'
+                handleClick={() => dispatch(toggleOption('flip'))}
+              />
             </Toolbar.Group>
           </Toolbar>
         </Cell>
         <Cell className='align-center-middle text-center'>
-          {/* TODO Redux - Add Reducer to Apply button */}
           <Button
             color={Colors.SECONDARY}
-            onClick={() => updateView(Views.PREVIEW)}
+            onClick={() => dispatch(updateView(Views.PREVIEW))}
           >
             Apply
           </Button>

@@ -9,13 +9,14 @@ class Counter extends Component {
   state = {
     count: 0
   };
+
   static defaultProps = {
     count: 0,
-    updateCountHandler: false,
+    handleCountUpdate: false
   };
 
   static propTypes = {
-    updateCount: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+    handleCountUpdate: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     count: PropTypes.number,
     id: PropTypes.string
   };
@@ -26,43 +27,41 @@ class Counter extends Component {
   }
 
   updateCount(direction) {
-    const {
-      updateCountHandler,
-      id,
-    } = this.props;
-    let count = updateCountHandler ? this.props.count : this.state.count;
+    const { handleCountUpdate, id } = this.props;
+    // eslint-disable-next-line react/destructuring-assignment
+    let count = handleCountUpdate ? this.props.count : this.state.count;
     if (direction === 'increase') {
-      count++
+      count += 1;
     }
     if (direction === 'decrease' && count !== 0) {
-      count--
+      count -= 1;
     }
 
-    if (updateCountHandler) {
-      updateCountHandler(id, count);
+    if (handleCountUpdate) {
+      // console.log(count);
+      handleCountUpdate(id, count);
     } else {
       this.setState({ count });
     }
   }
 
   render() {
-    const {
-      updateCountHandler,
-    } = this.props;
-    const count = updateCountHandler ? this.props.count : this.state.count;
+    const { handleCountUpdate } = this.props;
+    // eslint-disable-next-line react/destructuring-assignment
+    const count = handleCountUpdate ? this.props.count : this.state.count;
 
     return (
       <div className={styles.container}>
         <button
+          type='button'
           className={`${styles.button}`}
           onClick={() => this.updateCount('decrease')}
         >
           <Icon name='Remove' />
         </button>
-        <div className={styles.count}>
-          {count}
-        </div>
+        <div className={styles.count}>{count}</div>
         <button
+          type='button'
           className={`${styles.button}`}
           onClick={() => this.updateCount('increase')}
         >

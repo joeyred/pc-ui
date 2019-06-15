@@ -5,7 +5,7 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
+      content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0"
     />
     <meta name="theme-color" content="#000000" />
     <!--
@@ -35,7 +35,7 @@
       <button
         role="button"
         class="cropshop__button cropshop__button--open"
-        data-cropshop-collection="picfoams"
+        data-cropshop-collection="picfoam"
         data-cropshop-open="cropshop_app_modal"
       >
         PicFoams
@@ -44,7 +44,7 @@
       <button
         role="button"
         class="cropshop__button cropshop__button--open"
-        data-cropshop-collection="acrylipics"
+        data-cropshop-collection="acrylicpics"
         data-cropshop-open="cropshop_app_modal"
       >
         AcryliPics
@@ -84,6 +84,7 @@
     </div>
     <script>
       var CropshopData = {
+        cartUrl: 'brian-hayes.myshopify.com/cart',
         shop: {
           domain: 'brian-hayes.myshopify.com',
           name: 'Brian Hayes'
@@ -102,7 +103,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":0,"height":0},"display":{"width":"0.25","height":"0.25"}}'
+              '{"exact":{"width":0,"height":0},"display":{"width":"10","height":"8"}}',
+            variants: [
+              {
+                id: 28661299118132,
+                price: 2795,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693105807412,
@@ -117,7 +125,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"3","height":"1"},"display":{"width":"1","height":"2"}}'
+              '{"exact":{"width":"3","height":"1"},"display":{"width":"12","height":"8"}}',
+            variants: [
+              {
+                id: 28661293121588,
+                price: 1895,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693106200628,
@@ -132,7 +147,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"3","height":"2"},"display":{"width":"1","height":"3"}}'
+              '{"exact":{"width":"3","height":"2"},"display":{"width":"16","height":"8"}}',
+            variants: [
+              {
+                id: 28661294497844,
+                price: 2195,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693106593844,
@@ -147,7 +169,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":0,"height":0},"display":{"width":"0.25","height":0}}'
+              '{"exact":{"width":0,"height":0},"display":{"width":"5","height":"7"}}',
+            variants: [
+              {
+                id: 28661295808564,
+                price: 1295,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693106987060,
@@ -162,7 +191,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"5.75","height":"5.75"},"display":{"width":"6","height":"6"}}'
+              '{"exact":{"width":"5.75","height":"5.75"},"display":{"width":"6","height":"6"}}',
+            variants: [
+              {
+                id: 28661296955444,
+                price: 1495,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693106855988,
@@ -177,7 +213,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"1.75","height":"2.00"},"display":{"width":"2.00","height":"2.00"}}'
+              '{"exact":{"width":"1.75","height":"2.00"},"display":{"width":"7","height":"5"}}',
+            variants: [
+              {
+                id: 28661296365620,
+                price: 1295,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693107511348,
@@ -192,7 +235,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"2.00","height":"2.50"},"display":{"width":"2.25","height":"2.25"}}'
+              '{"exact":{"width":"2.00","height":"2.50"},"display":{"width":"8","height":"10"}}',
+            variants: [
+              {
+                id: 28661298528308,
+                price: 2795,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693104857140,
@@ -207,7 +257,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"8","height":"12"},"display":{"width":"7.75","height":"11.75"}}'
+              '{"exact":{"width":"8","height":"12"},"display":{"width":"8","height":"12"}}',
+            variants: [
+              {
+                id: 28661289418804,
+                price: 1895,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 3693106036788,
@@ -222,7 +279,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"1","height":0},"display":{"width":0,"height":0}}'
+              '{"exact":{"width":"1","height":0},"display":{"width":"8","height":"16"}}',
+            variants: [
+              {
+                id: 28661293645876,
+                price: 2195,
+                title: 'Default Title'
+              }
+            ]
           },
           {
             id: 1697280131124,
@@ -242,7 +306,14 @@
               }
             ],
             customFields:
-              '{"exact":{"width":"8.00","height":"8.00"},"display":{"width":"7.75","height":"7.75"}}'
+              '{"exact":{"width":"8.00","height":"8.00"},"display":{"width":"8","height":"8"}}',
+            variants: [
+              {
+                id: 14911196069940,
+                price: 1495,
+                title: 'Default Title'
+              }
+            ]
           }
         ]
       };

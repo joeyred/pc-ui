@@ -10,3 +10,21 @@
     display: block;
   }
 }
+
+.rotate-90 {
+  svg {
+    transform: rotate(90deg);
+  }
+}
+
+.rotate-180 {
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
+.rotate-270 {
+  svg {
+    transform: rotate(270deg);
+  }
+}
